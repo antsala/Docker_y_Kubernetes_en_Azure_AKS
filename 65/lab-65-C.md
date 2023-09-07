@@ -441,7 +441,7 @@ Ambos tipos de identidades administradas funcionan de la misma forma una vez que
 
 4.    La aplicación puede usar ese token para autenticarse con otros recursos [5], por ejemplo, un Blob Storage.
 
-
+```
      VIRTUAL MACHINE                                                   AZURE
   ----------------------                -------------------------------------------------------------------------
 
@@ -452,7 +452,7 @@ Ambos tipos de identidades administradas funcionan de la misma forma una vez que
        |  (Accede usando token) [5]
        |
   /Azure Resource/
-
+```
 
 Cuando se ejecutan varios pods en la misma máquina vitual en un cluster de Kubernetes, por
 # defecto cada pod puede alcanzar el endpoint IDMS. Esto significa que cada pod podría tener
