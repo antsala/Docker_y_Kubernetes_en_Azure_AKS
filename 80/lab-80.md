@@ -23,34 +23,57 @@ Cambiamos al directorio de trabajo:
 cd ~/Docker_y_Kubernetes_en_Azure_AKS/80
 ```
 
+Nos aseguramos que el cluster tiene al menos dos nodos.
 
-# Nos aseguramos que el cluster tiene al menos dos nodos.
+```
 kubectl get nodes
+```
 
-# Entramos en directorio de trabajo.
-cd ~/k8sAzure/Problemas_en_el_cluster
+Entramos en directorio de trabajo.
 
-# Volvemos a lanzar la app.
+```
+cd ./Problemas_en_el_cluster
+```
+
+Volvemos a lanzar la app.
+
+```
 kubectl create -f guestbook-all-in-one.yaml
+```
 
-# Esperamos hasta que la app se haya desplegado.
+Esperamos hasta que la app se haya desplegado.
+
+```
 kubectl get all
+```
 
-# Copiar la IP Externa.
+Copiar la IP Externa.
+
+```
 IP_EXTERNA=<Poner aquí la IP Externa del balanceador>
+```
 
-# Comprobamos en qué nodos se están ejecutando los pods.
+Comprobamos en qué nodos se están ejecutando los pods.
+
+````
 kubectl get pods -o wide
+```
 
-# Creamos un script.
+Creamos un script.
+
+```
 echo "while true; do"                   > script.sh
 echo "   curl -m 1 http://$IP_EXTERNA;" >> script.sh
 echo "   sleep 5;"                      >> script.sh
 echo "   clear;"                        >> script.sh
 echo "done"                             >> script.sh
+```
 
-# Lo hacemos ejecutable.
+Lo hacemos ejecutable.
+
+```
 chmod +x script.sh
+```
 
 # Lo ejecutamos
 ./script.sh

@@ -120,7 +120,6 @@ podman run --rm $MI_TAG
 ```
 
 
-
 ## Ejercicio 2. Conectar AKS al ACR.
 
 
@@ -145,6 +144,12 @@ Vamos a lanzar un deployment que use imágenes desde el ACR.
 
 ```
 cd ./AKS_ACR
+```
+
+Tomamos el nombre del ACR.
+
+```
+echo $ACR_NAME 
 ```
 
 Editamos el archivo 'deployment_smartwhale.yaml'
