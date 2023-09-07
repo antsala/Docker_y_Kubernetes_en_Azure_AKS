@@ -65,6 +65,9 @@ Al habilitar la integración con Azure AD, es necesario poner al administrador d
 Tomamos el ***ID del administrador del tenant***: (Nota: En el UPN poner el dominio verificado apropiado)
 ```
 TENANT_ADMIN_USER=antsalgra_hotmail.com#EXT#@antsalgrahotmail.onmicrosoft.com 
+```
+
+```
 ADMIN_USER_ID=$(az ad user show \
                     --id $TENANT_ADMIN_USER\
                     --query id \
