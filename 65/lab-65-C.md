@@ -454,35 +454,27 @@ Ambos tipos de identidades administradas funcionan de la misma forma una vez que
   /Azure Resource/
 ```
 
-Cuando se ejecutan varios pods en la misma máquina vitual en un cluster de Kubernetes, por
-# defecto cada pod puede alcanzar el endpoint IDMS. Esto significa que cada pod podría tener
-# acceso a las identidades configuradas para esa máquina virtual.
-#
-# El complemento de identidades de pod administradas de AAD configura el cluster de forma que
-# los pods ya no pieden tener acceso directo al endpoint IDMS para solicitan un token de acceso.
-# Configura el cluster de forma que los pods que estén intentando acceder al endpoint IDMS [1]
-# conectarán con un DaemonSet que corre en el cluster, y que recibe el nombre de Node Managed 
-# identity (NMI). 
-#
-# NMI verificará a qué identidades debería tener acceso el pod. Si el pod está configurado para
-# tener acceso a la identidad solicitada, entonces el DaemonSet NMI conectará con el IMDS (pasos
-# [2] a [5]) para obtener el token y lo entregará al pod [6]. 
-#
-# El pod(s) usará ese token para acceder a los recursos de Azure [7]
+Cuando se ejecutan varios pods en la misma máquina vitual en un cluster de Kubernetes, por defecto cada pod puede alcanzar el endpoint IDMS. Esto significa que cada pod podría tener acceso a las identidades configuradas para esa máquina virtual.
 
+El complemento de identidades de pod administradas de AAD configura el cluster de forma que los pods ya no pieden tener acceso directo al endpoint IDMS para solicitan un token de acceso. Configura el cluster de forma que los pods que estén intentando acceder al endpoint IDMS [1] conectarán con un DaemonSet que corre en el cluster, y que recibe el nombre de Node Managed identity (NMI). 
 
-#     VIRTUAL MACHINE                                                                      AZURE
-#  --------------------------------------------      -------------------------------------------------------------------------
-#
-#            (Solicita token) [1] -->               (Solicita token) [2] -->          (Se autentica) [3]-->
-#     /POD/                              /NMI/                                /IMDS/                          /AAD/
-#       |    <-- (recibe token) [6]                 <-- (recibe token) [5]           <-- (recibe token) [4]
-#       |
-#       |
-#       |  (Accede usando token) [7]
-#       |
-#  /Azure Resource/
+NMI verificará a qué identidades debería tener acceso el pod. Si el pod está configurado para tener acceso a la identidad solicitada, entonces el DaemonSet NMI conectará con el IMDS (pasos# [2] a [5]) para obtener el token y lo entregará al pod [6]. 
 
+El pod(s) usará ese token para acceder a los recursos de Azure [7]
+
+```
+     VIRTUAL MACHINE                                                                      AZURE
+  --------------------------------------------      -------------------------------------------------------------------------
+
+            (Solicita token) [1] -->               (Solicita token) [2] -->          (Se autentica) [3]-->
+     /POD/                              /NMI/                                /IMDS/                          /AAD/
+       |    <-- (recibe token) [6]                 <-- (recibe token) [5]           <-- (recibe token) [4]
+       |
+       |
+       |  (Accede usando token) [7]
+       |
+  /Azure Resource/
+```
 # De esta forma, podemos controlar los pods del cluster que tendrán acceso a ciertas identidades y, 
 # en consecuencia, a cierto recursos de Azure.
 
