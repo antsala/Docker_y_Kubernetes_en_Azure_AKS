@@ -31,10 +31,12 @@ az group create \
 ```
 
 
-Creamos el ACR.
+Creamos el ACR. Pon una fecha.
 
 ```
 ACR_NAME=myacrasg<yyyymmdd>
+```
+```
 az acr create \
     --resource-group myACR-rg \
     --name $ACR_NAME \
@@ -142,7 +144,7 @@ az aks update \
 Vamos a lanzar un deployment que use imágenes desde el ACR.
 
 ```
-cd ~/k8sAzure/AKS_ACR
+cd ./AKS_ACR
 ```
 
 Editamos el archivo 'deployment_smartwhale.yaml'

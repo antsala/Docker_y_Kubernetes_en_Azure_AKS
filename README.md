@@ -243,6 +243,11 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
 
 ## Carpeta 70
 
-1. Laboratorio 65-A: ***Azure Container Registry (ACR)***. Ejercicios:
+1. Laboratorio 70: ***Azure Container Registry (ACR)***. Ejercicios:
    - Creación de un ***ACR (Azure Container Registry)***
    - Conectar ***AKS*** al ***ACR***.
+
+## Carpeta 80
+
+1. Laboratorio 80: ***Troubleshooting en AKS***. Ejercicios:
+   - Creación de un ***Problemas cuando cae un nodo del cluster***
