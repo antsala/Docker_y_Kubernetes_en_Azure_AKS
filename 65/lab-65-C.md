@@ -147,7 +147,7 @@ echo $AKS_ID
 
 Creamos una asignación de rol de Azure para el grupo ***aks users***, del que es miembro ***Luke***. Si diera error indicando que el principal de seguridad no existe, esperar unos segundos porque el grupo aún no se ha creado:
 ```
-sleep 60
+sleep 30
 az role assignment create \
     --assignee $AKS_USERS_GROUP_ID \
     --role "Azure Kubernetes Service Cluster User Role" \
