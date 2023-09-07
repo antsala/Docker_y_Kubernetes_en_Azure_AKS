@@ -164,7 +164,7 @@ NOTA: Si se hubiera usado la ***CloudShell***, también habría que dar permisos
 
 ## Ejercicio 5. ***Configurar RBAC en AKS***
 
-Para hacer la demo, crearemos dos ***namespaces*** y desplegaremos la aplicación de voto de Azure en cada espacio de nombres. Asignaremos al grupo que creamos acceso de solo lectura de ámbito de cluster a los pods. Al usuario de asignaremos la capacidad de eliminar pods solo en uno de los espacios de nombres.
+Para hacer la demo, crearemos dos ***namespaces*** y desplegaremos la aplicación de voto de Azure en cada espacio de nombres. Asignaremos al grupo que creamos acceso de solo lectura de ámbito de cluster a los pods. Al usuario le asignaremos la capacidad de eliminar pods solo en uno de los espacios de nombres.
 
 Crearemos los siguientes objetos en k8s.
 
@@ -730,6 +730,7 @@ az storage blob upload \
     --name $FILENAME_IN_AZURE.txt  \
     --account-name $STORAGE_ACCOUNT_NAME \
     --sas-token $STORAGE_ACCOUNT_SAS_TOKEN
+```
 
 Vamos a intentar acceder al archivo desde un pod. Para ello crearemos un nuevo desployment que contendrá un vínculo con la identidad administrada que creamos anteriormente. Editamos el archivo 'deployment-with-identity.yaml'.
 
