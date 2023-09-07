@@ -392,6 +392,23 @@ Vamos a verificar si el usuario tiene permiso para ver los pods en todos los esp
 ```
 kubectl get pods --namespace no-access
 ```
+
+IMPORTANTE. Al interactuar con el cluster, se volverá a pedir la autenticación mediante un código. Sigue el procedimiento poniendo las credenciales de:
+
+Usuario:
+
+```
+luke@antsalgrahotmail.onmicrosoft.com
+```
+
+password:
+
+```
+useTheForce#
+```
+
+Ahora comprobamos en el otro espacio de nombres.
+
 ```
 kubectl get pods --namespace delete-access
 ```
