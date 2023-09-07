@@ -55,7 +55,7 @@ IP_EXTERNA=<Poner aquí la IP Externa del balanceador>
 
 Comprobamos en qué nodos se están ejecutando los pods.
 
-````
+```
 kubectl get pods -o wide
 ```
 
