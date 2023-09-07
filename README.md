@@ -252,3 +252,5 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
 1. Laboratorio 80: ***Troubleshooting en AKS***. Ejercicios:
    - ***Problemas cuando cae un nodo del cluster***
    - ***Problemas cuando no hay recursos***
+   - ***Arreglando problemas de montaje de almacenamiento***
+   - ***Administrar el fallo de un nodo cuando hay PVCs***
