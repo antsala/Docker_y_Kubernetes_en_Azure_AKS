@@ -1,4 +1,4 @@
-# k8s_desarrolladores
+# Docker_y_Kubernetes_en_Azure_AKS
 
 Para poder realizar los laboratorios es necesario clonar el repo desde GitHub.Para ello realizamos abrimos una consola de comandos e instalamos ***git*** en la máquina virtual.
 
