@@ -74,10 +74,10 @@ Comprobamos.
 echo $ACR_TOKEN
 ```
 
-Nos logamos al ACR con el token obtenido.
+Nos logamos al ACR con el token obtenido. Nota, si tienes Docker usa 'sudo docker'.
 
 ```
-sudo docker login \
+podman login \
     $ACR_LOGIN_SERVER \
     --username 00000000-0000-0000-0000-000000000000 \
     --password $ACR_TOKEN
@@ -86,7 +86,7 @@ sudo docker login \
 Etiquetamos la imagen para poder subirla al ACR. 
 
 ```
-MI_TAG=$ACR_LOGIN_SERVER/antsala/smartwhale
+MI_TAG=$ACR_LOGIN_SERVER/antsala/whalesay
 ```
 
 Comprobamos.
@@ -96,7 +96,7 @@ echo $MI_TAG
 
 Etiquetamos.
 ```
-podman image tag smartwhale $MI_TAG
+podman image tag docker/whalesay $MI_TAG
 ```
 
 Listamos las imágenes.
