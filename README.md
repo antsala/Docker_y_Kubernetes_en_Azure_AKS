@@ -250,4 +250,5 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
 ## Carpeta 80
 
 1. Laboratorio 80: ***Troubleshooting en AKS***. Ejercicios:
-   - Creación de un ***Problemas cuando cae un nodo del cluster***
+   - ***Problemas cuando cae un nodo del cluster***
+   - ***Problemas cuando no hay recursos***

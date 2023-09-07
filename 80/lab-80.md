@@ -75,65 +75,89 @@ Lo hacemos ejecutable.
 chmod +x script.sh
 ```
 
-# Lo ejecutamos
+Lo ejecutamos.
+
+```
 ./script.sh
+```
 
-# El script hace una request cada 5 segundos. Borra la pantalla para ver la response.
-# Mientras k8s rebalancea el cluster (cuando hay algun error de nodo) puede ser normal 
-# orservar alguna latencia en la response.
+El script hace una request cada 5 segundos. Borra la pantalla para ver la response. Mientras k8s rebalancea el cluster (cuando hay algun error de nodo) puede ser normal orservar alguna latencia en la response.
 
-# Vamos a simular el fallo de un nodo. Para ello procederemos a apagarlo. Apagamos el
-# nodo que tenga más pods. 
-# En otra terminal, con el siguiente comando podemos ver el nodo con más pods.
+Vamos a simular el fallo de un nodo. Para ello procederemos a apagarlo. Apagamos el nodo que tenga más pods. 
+
+En otra terminal, con el siguiente comando podemos ver el nodo con más pods.
+
+```
 kubectl get pods -o wide
+```
 
-# Tomamos en nombre del grupo de recursos donde reside el scale set del cluster.
+Tomamos en nombre del grupo de recursos donde reside el scale set del cluster.
+
+```
 vmssRG=$(az aks show \
             --name myaks \
             --resource-group myaks-rg \
             --query nodeResourceGroup \
             --output tsv)
+```
 
-# Comprobamos
+Comprobamos
+
+```
 echo $vmssRG
+```
 
-# Listamos los nodos del cluster y nos quedamos con el nombre del que más pods contiene.
+Listamos los nodos del cluster y nos quedamos con el nombre del que más pods contiene.
+
+```
 kubectl get nodes
+```
 
-# Supongamos que el nodo 'aks-nodepool1-XXXXXXXX-vmss000001' es quien más pods contiene.
-# 'aks-nodepool1-XXXXXXXX-vmss' es el nombre del vmss.
-# '000001', es el id de la instancia.
+Supongamos que el nodo 'aks-nodepool1-XXXXXXXX-vmss000001' es quien más pods contiene. 'aks-nodepool1-XXXXXXXX-vmss' es el nombre del vmss. '000001', es el id de la instancia.
+
+```
 VMMS_NAME=<Poner aquí el 'nombre del vmms'>
-INSTANCE_ID=<Poner aquí el 'id de la instancia'>
+```
 
-# Comprobamos.
+```
+INSTANCE_ID=<Poner aquí el 'id de la instancia'>
+```
+
+Comprobamos.
+
+```
 echo $VMMS_NAME
 echo $INSTANCE_ID
+```
 
-# Paramos la instancia (nodo) que tiene más pods.
+Paramos la instancia (nodo) que tiene más pods.
+
+```
 az vmss stop \
     --resource-group $vmssRG  \
     --name $VMMS_NAME \
     --instance-id $INSTANCE_ID
+```
 
-# Observar como 'curl' no obtiene respuesta mientras se rebalancea el cluster.
-# Comprobar como el estado del nodo es 'NotReady'
+Observar como 'curl' no obtiene respuesta mientras se rebalancea el cluster. Comprobar como el estado del nodo es 'NotReady'.
+
+```
 kubectl get nodes
+```
 
-# La app puede seguir funcionando porque tiene alta disponibilidad en sus 
-# microservicios, con una excepción importante, redis-master. Este pod NO 
-# usa PVC, por lo tanto si su nodo cae, será iniciado en otro, perdiendose 
-# su base de datos que reside en la capa reescribible del contenedor.
-#
-# Esto demuestra la necesidad de almacenar el estado en un PVC.
-#
-# El redespliegue de los pods en el único nodo vivo puede tardar unos minutos 
-# (5 al menos). Esperar y volver a comprobar con
+La app puede seguir funcionando porque tiene alta disponibilidad en sus microservicios, con una excepción importante, redis-master. Este pod NO usa PVC, por lo tanto si su nodo cae, será iniciado en otro, perdiendose su base de datos que reside en la capa reescribible del contenedor.
+
+Esto demuestra la necesidad de almacenar el estado en un PVC.
+
+El redespliegue de los pods en el único nodo vivo puede tardar unos minutos (5 al menos). Esperar y volver a comprobar con:
+
+```
 kubectl get pods -o wide -w
+```
 
-####################################
-# Problemas cuando no hay recursos #
-####################################
+
+## Ejercicio 2:  Problemas cuando no hay recursos.
+
 
 # Cuando un cluster no tiene suficiente CPU o memoria para planificar los pods, 
 # éstos se quedan en un estado pendiente. K8s usa 'requests' para calcular 
