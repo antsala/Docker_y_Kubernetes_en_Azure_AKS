@@ -6,6 +6,8 @@ Requisitos:
 
 1. Una máquina virtual con Ubuntu 20.04 LTS a la que poder hacer ssh o escritorio remoto.
 2. Cluster AKS. (Ver lab-00.md)
+3. IMPORTANTE!!!!! Disponer de credenciales de Global Administrator en la subscripción de Azure. Como el alumno en el curso no la va a tener, este laboratorio se realizará como una demo.
+
 
 ## Ejercicio 1. ***Introduccion a RBAC***
 
