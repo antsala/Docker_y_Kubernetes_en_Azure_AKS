@@ -43,7 +43,7 @@ En consecuencia, a través de estas variables de entorno, podremos configurar la
 
 Nos posicionamos en el directorio de trabajo:
 ```
-cd ~/k8s_desarrolladores/25
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/25
 ```
 
 Abrimos el archivo que contiene el deployment de MongoDB.

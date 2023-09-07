@@ -12,7 +12,7 @@ Requisitos:
 
 Entramos en el directorio del laboratorio
 ```
-cd ~/k8s_desarrolladores/35
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/35
 ```
 
 Procedemos a redesplegar las aplicaciones ***hellocontainer*** y ***mongodb*** de los ejercicios anteriores, pero con un cambio ***NOTABLE***: Puesto que vamos a usar un ***controlador Ingress*** para reenviar el tráfico a los servicios del Frontend de las aplicaciones, éstos servicios deben convertirse a servicios ***INTERNOS***.

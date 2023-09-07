@@ -14,7 +14,7 @@ Exploraremos cómo Kubernetes se asegura que nuestra aplicación está funcionan
 
 Cambiamos al directorio de trabajo.
 ```
-cd ~/k8s_desarrolladores/65
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/65
 ```
 
 Desplegamos la aplicación:

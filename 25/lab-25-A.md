@@ -14,7 +14,7 @@ Como hemos aprendido, se puede usar ***kubectl*** para crear objetos en el clust
 
 En la carpeta de los laboratorios del curso tenemos el archivo ***lab-20-B-nginx-deployment.yaml***, que contiene la estructura básica de un deployment. Procedemos a abrir el archivo con el editor ***VSC*** si se dispone de interfaz gráfica, sino, otro a elección.
 ```
-cd ~/k8s_desarrolladores/25
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/25
 code lab-25-A-nginx-deployment.yaml
 ```
 

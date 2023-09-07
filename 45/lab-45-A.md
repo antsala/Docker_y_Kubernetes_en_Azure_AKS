@@ -12,7 +12,7 @@ Requisitos:
 
 Entramos en el directorio del laboratorio
 ```
-cd ~/k8s_desarrolladores/45
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/45
 ```
 
 Hay dos dimensiones para realizar el escalado de una aplicación en Kubernetes. La primera dimensión del escalado consiste en determinar el ***número de pods***, mientras que la segunda es el ***número de nodos*** del cluster.

@@ -12,7 +12,7 @@ Requisitos:
 
 Entramos en el directorio del laboratorio
 ```
-cd ~/k8s_desarrolladores/55
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/55
 ```
 
 Estudiamos el YAML:

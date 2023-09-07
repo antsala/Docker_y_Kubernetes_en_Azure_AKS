@@ -138,7 +138,7 @@ Con esto se termina la integración entre el Application Gateway y el cluster de
 
 Cambiamos al directorio de trabajo.
 ```
-cd ~/k8s_desarrolladores/35
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/35
 ```
 
 Vamos a desplegar la aplicación ***Guestbook*** y exponerla por medio de una ingress. Editemos el archivo para conocer el despliegue. Es la app de ejemplo de Google.

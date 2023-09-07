@@ -12,7 +12,7 @@ Requisitos:
 
 Cambiamos al directorio del laboratorio:
 ```
-cd ~/k8s_desarrolladores/03/web_estatica
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/03/web_estatica
 ```
 
 En este directorio tenemos un archivo de ejemplo llamado ***Dockerfile***, que editamos para estudiarlo

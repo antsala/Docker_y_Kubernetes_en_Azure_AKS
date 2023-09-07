@@ -22,7 +22,7 @@ La documentación de ***MongoDB*** nos dice que la imagen tiene la posibilidad d
 
 Cambiamos al directorio de trabajo:
 ```
-cd ~/k8s_desarrolladores/55
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/55
 ```
 
 Una técnica muy interesante el crear un script y almacenarlo en un ***configmap***. El script leerá información confidencial que se almacena en un ***secreto***.

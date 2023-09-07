@@ -20,7 +20,7 @@ Un DSL es un ***Domain Specific Language*** que permite crear apps de forma decl
 Cambiamos al directorio de trabajo. En él hay otro directorio llamado ***sinatra***, donde se encuentra el Dockerfile.
 
 ```
-cd ~/k8s_desarrolladores/03/frontend-backend/sinatra
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/03/frontend-backend/sinatra
 ```
 ```
 ls -l
@@ -158,7 +158,7 @@ Procedemos a desplegar el Backend, que será un contenedor Redis que almacenará
 
 La carpeta ***redis*** contiene los archivos del Backend. En primer lugar consultamos el Dockerfile que construirá el contenedor.
 ```
-cd ~/k8s_desarrolladores/03/frontend-backend/sinatra/redis
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/03/frontend-backend/sinatra/redis
 code ./Dockerfile
 ```
 
@@ -285,7 +285,7 @@ A continuación se muestra la salida del comando anterior, donde se puede apreci
 
 Procedemos a deslplegar la nueva versión del Frontend, esta vez conectando con el contenedor ***db*** (Redis). Cambiamos al directorio donde se encuentra la nueva versión.
 ```
-cd ~/k8s_desarrolladores/03/frontend-backend/sinatra/webapp_redis
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/03/frontend-backend/sinatra/webapp_redis
 ```
 
 Vuelven a aparecer las dos carpetas de la versión anterior (***bin*** y ***lib***). En la carpeta ***bin*** tenemos el script ***webapp*** que lanza la app. Éste no ha cambiado, pero debemos darle permiso de ejecución.

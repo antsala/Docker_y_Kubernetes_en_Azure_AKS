@@ -24,7 +24,7 @@ Parece claro que la primera solución es muy ineficiente, compleja y requiere ma
 
 Cambiamos al directorio de trabajo:
 ```
-cd ~/k8s_desarrolladores/60
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/60
 ```
 
 En este link: https://prometheus-community.github.io/helm-charts/ tenemos la documentación del chart de Prometheus. Si la leemos atentamente, veremos que se instala el ***Operator***, con las ventajas que este ofrece.

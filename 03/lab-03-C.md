@@ -14,7 +14,7 @@ Vamos a crear una aplicación web elemental en un archivo html. Presentaremos es
 
 Cambiamos al directorio de trabajo
 ```
-cd ~/k8s_desarrolladores/03/volumen
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/03/volumen
 ```
 
 En el directorio existen dos archivos de configuración de nginx: ***nginx.conf*** y ***global.conf***. Comprobemos el contenido de cada uno.
@@ -66,7 +66,7 @@ Una vez estudiada la aplicación, cerramos sin modificar el archivo.
 
 Aquí viene lo importante. Vamos a ejecutar un contenedor que ***monte un volumen***. En la sintaxis para montar el volumen, debemos especificar dos rutas:
 
-1. Ruta del host: Es la carpeta donde está la aplicación, el archivo ***index.html***. Si el directorio actual es ***~/k8s_desarrolladores/03/volumen***, la ruta de la aplicación es ***$PWD/website***.
+1. Ruta del host: Es la carpeta donde está la aplicación, el archivo ***index.html***. Si el directorio actual es ***~/Docker_y_Kubernetes_en_Azure_AKS/03/volumen***, la ruta de la aplicación es ***$PWD/website***.
 2. Ruta en el contenedor: Es la carpeta donde se realizará el montaje en el contenedor. En este caso, necesitamos que sea la carpeta en la que nginx espera encontrar los archivos de la aplicación, es decir, ***/var/www/html/website***.
 3. El tercer argumento del volumen es ***ro*** o ***rw***, e indica si el contenedor puede modificar los archivos del host.
 

@@ -37,7 +37,7 @@ code .profile
 
 Agregar estas dos líneas al final del archivo.
 ```
-export GOPATH=$HOME/k8s_desarrolladores/03/work
+export GOPATH=$HOME/Docker_y_Kubernetes_en_Azure_AKS/03/work
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 ```
 
@@ -50,7 +50,7 @@ source .profile
 
 Editamos el archivo ***hello.go*** que usaremos para probar el compilador.
 ```
-code ~/k8s_desarrolladores/03/work/src/hello/hello.go
+code ~/Docker_y_Kubernetes_en_Azure_AKS/03/work/src/hello/hello.go
 ```
 
 Como se puede comprobar es un código sencillo que muestra el mensaje ***Hola Mundo!!!***
@@ -70,9 +70,9 @@ Para determinar la carpeta en la que Go coloca el ejecutable:
 which hello
 ```
 
-Acabamos de comprobar que el compilador de Go funciona. Procedemos a crear una app que haga algo más apropiado. Se encuentra en el archivo ***~/k8s_desarrolladores/03/work/src/hellocontainer/helloContainer.go***. La editamos.
+Acabamos de comprobar que el compilador de Go funciona. Procedemos a crear una app que haga algo más apropiado. Se encuentra en el archivo ***~/Docker_y_Kubernetes_en_Azure_AKS/03/work/src/hellocontainer/helloContainer.go***. La editamos.
 ```
-code ~/k8s_desarrolladores/03/work/src/helloContainer/helloContainer.go
+code ~/Docker_y_Kubernetes_en_Azure_AKS/03/work/src/helloContainer/helloContainer.go
 ```
 
 El programa hace lo siguiente:
@@ -120,17 +120,17 @@ Cerramos la última consola y, paramos el servidor con ***CTRL+C***.
 
 Vamos a contenerizar la app. Para ello nos colocamos en el directorio de contexto con el siguiente comando.
 ```
-cd ~/k8s_desarrolladores/03/helloContainerCtx
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/03/helloContainerCtx
 ```
 
 Copiamos la carpeta ***helloContainer*** (que contiene ***helloContainer.go***) a este directorio de contexto.
 ```
-cp -r ~/k8s_desarrolladores/03/work/src/helloContainer/ .
+cp -r ~/Docker_y_Kubernetes_en_Azure_AKS/03/work/src/helloContainer/ .
 ```
 
 En el directorio de contexto tenemos un archivo Dockerfile que pasamos a detallar.
 ```
-code ~/k8s_desarrolladores/03/helloContainerCtx/Dockerfile
+code ~/Docker_y_Kubernetes_en_Azure_AKS/03/helloContainerCtx/Dockerfile
 ```
 
 Este Dockerfile va a hacer dos cosas:
@@ -219,9 +219,9 @@ Para poder crear archivos YAML de manifiesto, necesitamos que esté instalada la
 sudo apt -y install docker-compose
 ```
 
-Ahora procedemos a estudiar un archivo de manifiesto de ejemplo. Este se encuentra en la carpeta *** '~/k8s_desarrolladores/03/helloContainerSvc***, así que entramos en ella.
+Ahora procedemos a estudiar un archivo de manifiesto de ejemplo. Este se encuentra en la carpeta *** '~/Docker_y_Kubernetes_en_Azure_AKS/03/helloContainerSvc***, así que entramos en ella.
 ```
-cd ~/k8s_desarrolladores/03/helloContainerSvc
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/03/helloContainerSvc
 ```
 
 En esta carpeta tenemos el archivo ***Docker-compose.yaml***. Lo editamos para estudiarlo:

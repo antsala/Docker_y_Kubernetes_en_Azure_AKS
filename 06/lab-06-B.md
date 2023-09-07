@@ -11,7 +11,7 @@ Requisitos:
 
 Nos ubicamos en el directorio de trabajo
 ```
-cd ~/k8s_desarrolladores/06
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/06
 ```
 
 Este laboratorio desplegará un pod con dos contenedores. El Frontend con ***phpMyAdmin*** y el Backend con ***mySQL***. En primer lugar comprobamos que no existen contenedores en ejecución con podman.

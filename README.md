@@ -12,8 +12,8 @@ Ahora clonamos el repositorio con los laboratorios del curso.
 
 ```
 cd ~
-git clone https://github.com/antsala/k8s_desarrolladores.git
-cd ~/k8s_desarrolladores
+git clone https://github.com/antsala/Docker_y_Kubernetes_en_Azure_AKS
+cd ~/Docker_y_Kubernetes_en_Azure_AKS
 ```
 
 
@@ -37,14 +37,7 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
 
 
 
-##  Carpeta 01 (AWS)
 
-1. Laboratorio 01: ***Herramientas de administración en AWS***. Ejercicios:
-   - Instalación de ***AWS CLI***.
-   - Configuración de la credencial AWS para la ***CLI***.
-   - Instalación y configuración de ***eksctl***.
-   - Creación de ***EKS*** desde ***AWS CLI***.
-   - Eliminación de ***EKS*** desde ***AWS CLI***.
 
 
 
@@ -175,9 +168,6 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
    - ***Escalar*** el frontend de GuestBook.
    - ***Autoescalado*** de nodos.
 
-2. Laboratorio 45-B: ***Horizontal POD Autoscaler (HPA) en AWS***. Ejercicios:
-   - Desplegar la aplicación de ejemplo.
-   - ***Escalar*** el frontend de GuestBook.
 
 
 

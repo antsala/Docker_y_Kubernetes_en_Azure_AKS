@@ -11,7 +11,7 @@ Requisitos:
 
 Entramos en el directorio del laboratorio
 ```
-cd ~/k8s_desarrolladores/50
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/50
 ```
 
 Helm es el administrador de paquetes de Kubernetes. Permite desplegar, actualizar, y administrar las aplicaciones de Kubernetes. Para ello, se escribe algo llamado ***charts***. Puedes pensar en los charts de Helm como archivos YAML parametrizados.

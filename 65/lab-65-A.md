@@ -21,7 +21,7 @@ Lo primero que debemos conocer es la ***IP*** del servicio externo al cluster. E
 
 Cambiamos al directorio de trabajo:
 ```
-cd ~/k8s_desarrolladores/65
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/65
 ```
 
 Tomamos la IP de la máquina virtual del laboratorio y la anotamos, será necesaria más adelante. (Nota: si no sabes cual es, pregunta al formador)

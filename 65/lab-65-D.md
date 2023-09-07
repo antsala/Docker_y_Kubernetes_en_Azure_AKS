@@ -25,7 +25,7 @@ Como curiosidad aclaramos el significado de ***canary***. El canario es un pája
 
 Cambiamos al directorio de trabajo.
 ```
-cd ~/k8s_desarrolladores/65
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/65
 ```
 
 Vamos a usar archivos html sencillos que representarán las dos versiones de la aplicación. Haremos uso de configmaps para inyectarlos.

@@ -17,7 +17,7 @@ En este laboratorio desplegaremos ***1 ConfigMap***, ***2 servicios*** ***1 Stat
 
 Cambiamos al directorio de trabajo:
 ```
-cd ~/k8s_desarrolladores/55
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/55
 ```
 
 Editamos el YAML del ConfigMap para estudiarlo.

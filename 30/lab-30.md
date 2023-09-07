@@ -11,7 +11,7 @@ Requisitos:
 
 Entramos en el directorio del laboratorio
 ```
-cd ~/k8s_desarrolladores/30
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/30
 ```
 
 Listamos los espacios de nombre que existen el cualquier implementación del cluster de Kubernetes.
