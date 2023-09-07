@@ -239,3 +239,10 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
 4. Laboratorio 65-D: ***Despliegue Canary***. Ejercicios: 
    - ¿Qué es un despliegue ***Canary***?.
    - Ejemplo de un despliegue ***Canary***.
+
+
+## Carpeta 70
+
+1. Laboratorio 65-A: ***Azure Container Registry (ACR)***. Ejercicios:
+   - Creación de un ***ACR (Azure Container Registry)***
+   - Conectar ***AKS*** al ***ACR***.
