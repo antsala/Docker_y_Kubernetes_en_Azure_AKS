@@ -475,70 +475,93 @@ El pod(s) usará ese token para acceder a los recursos de Azure [7]
        |
   /Azure Resource/
 ```
-# De esta forma, podemos controlar los pods del cluster que tendrán acceso a ciertas identidades y, 
-# en consecuencia, a cierto recursos de Azure.
 
-#########################################################################
-# Configurar un cluster con identidades de pod aministradas de Azure AD #
-#########################################################################
+De esta forma, podemos controlar los pods del cluster que tendrán acceso a ciertas identidades y, en consecuencia, a cierto recursos de Azure.
 
-# El complemento de identidades de pod administradas en un cluster en ejecución,
-# se realiza por medio de la preview de aks. En la fecha de este escrito, 
-# Enero 2022, aún está en beta y no forma parte de la CLI oficial.
 
-# Para poder instalar este complemento, debemos agregar dicha extensión a la CLI
+Configurar un cluster con identidades de pod aministradas de Azure AD.
+
+
+El complemento de identidades de pod administradas en un cluster en ejecución, se realiza por medio de la preview de aks. En la fecha de este escrito, Enero 2022, aún está en beta y no forma parte de la CLI oficial.
+
+Para poder instalar este complemento, debemos agregar dicha extensión a la CLI
+
+```
 az extension add --name aks-preview
+```
 
-# Actualiamos por si Microsoft hubiera publicado una nueva versión. 
+Actualiamos por si Microsoft hubiera publicado una nueva versión. 
+
+```
 az extension update --name aks-preview
+```
 
-# Registramos las identidades de pod administradas de Azure AD.
+Registramos las identidades de pod administradas de Azure AD.
+
+```
 az feature register \
     --name EnablePodIdentityPreview \
     --namespace Microsoft.ContainerService
+```
 
-# Tal y como sugiere el warning, se requiere este comando para que se propague el cambio.
+Tal y como sugiere el warning, se requiere este comando para que se propague el cambio.
+
+```
 az provider register --name Microsoft.ContainerService
+```
 
-# Comprobar que la característica de identidad de pods se ha registrado en la subscripción.
-# ¡¡¡¡IMPORTANTE!!!!!
-# Esperar hasta que aparezca 'Registered' en 'RegistrationState'. Lleva bastante tiempo. 10-15 minutos.
+Comprobar que la característica de identidad de pods se ha registrado en la subscripción.
+
+¡¡¡¡IMPORTANTE!!!!! Esperar hasta que aparezca 'Registered' en 'RegistrationState'. Lleva bastante tiempo. 10-15 minutos.
+
+```
 az feature show \
     --name EnablePodIdentityPreview \
     --namespace Microsoft.ContainerService \
     -o table
+```
 
-# Actualizamos el cluster para que use la identidades de pod administradas.
+Actualizamos el cluster para que use la identidades de pod administradas.
+
+```
 az aks update \
     --resource-group myaks-rg  \
     --name myaks \
     --enable-managed-identity \
     --enable-pod-identity \
     --enable-pod-identity-with-kubenet
+```
 
-# Volvemos a refrescar as credenciales para kubectl.
+Volvemos a refrescar as credenciales para kubectl.
+
+```
 az aks get-credentials \
     --resource-group myaks-rg \
     --name myaks \
     --overwrite-existing
+```
 
-# Listamos nodos para comprobar
+Listamos nodos para comprobar
+
+```
 kubectl get nodes
+```
 
-####################################
-# Asociar una identidad al cluster #
-####################################
+Asociar una identidad al cluster.
 
-# Para empezar, vamos a crear una nueva identidad administrada asignada por el usuario en Azure.
+
+Para empezar, vamos a crear una nueva identidad administrada asignada por el usuario en Azure.
+
+```
 az identity create \
     --resource-group myaks-rg \
     --name access-blob-id \
     --location westeurope 
+```
 
-# En la GUI se puede ver la identidad administrada en Home / Managed Identities / access-blob-id
+En la GUI se puede ver la identidad administrada en 'Home/Managed Identities/access-blob-id'. Una vez creada, necesitamos copiar el 'clientId' (identificador único de la nueva identidad) y el 'id' (identificador del recurso), que serán usados en breve.
 
-# Una vez creada, necesitamos copiar el 'clientId' (identificador único de la nueva identidad)
-# y el 'id' (identificador del recurso), que serán usados en breve.
+```
 CLIENT_ID=$(az identity show \
                 --resource-group myaks-rg \
                 --name access-blob-id \
@@ -549,70 +572,108 @@ RESOURCE_ID=$(az identity show \
                 --name access-blob-id \
                 --query id \
                 -o tsv)
+```
 
-# Comprobamos
+
+Comprobamos
+```
 echo $CLIENT_ID
 echo $RESOURCE_ID
+```
 
-# Ahora estamos preparados para asociar la identidad administrada al cluster AKS.
+Ahora estamos preparados para asociar la identidad administrada al cluster AKS.
+
+```
 az aks pod-identity add \
     --resource-group myaks-rg \
     --cluster-name myaks \
     --namespace default \
     --name access-blob-id \
     --identity-resource-id $RESOURCE_ID
+```
 
-# Podemos comprobar que la identidad ha sido asignada al cluster y está disponible para su uso, con este comando.
+Podemos comprobar que la identidad ha sido asignada al cluster y está disponible para su uso, con este comando.
+
+```
 kubectl get azureidentity
+```
 
-##############################################
-# Usar un pod con una identidad administrada #
-##############################################
 
-# Vamos a crear una cuenta de almacenamiento y usaremos la identidad administrada para acceder a ella.
-STORAGE_ACCOUNT_NAME=myaks20220114sto
+Usar un pod con una identidad administrada.
+
+
+Vamos a crear una cuenta de almacenamiento y usaremos la identidad administrada para acceder a ella.
+
+```
+STORAGE_ACCOUNT_NAME=myaks<Pon aquí una fecha>20220114sto
+```
+
+```
 az storage account create \
     --name $STORAGE_ACCOUNT_NAME \
     --resource-group myaks-rg \
     --location westeurope \
     --sku Standard_LRS \
     --kind StorageV2
+```
 
-# Tomamos el contexto de la cuenta de almacenamiento, que es algo como esto:
-# '/subscriptions/5d72e184-55f6-4093-838e-3d0f7506881a/resourceGroups/myaks-rg/providers/Microsoft.Storage/storageAccounts/myaks20220114sto'
+
+Tomamos el contexto de la cuenta de almacenamiento, que es algo como esto:
+'/subscriptions/5d72e184-55f6-4093-838e-3d0f7506881a/resourceGroups/myaks-rg/providers/Microsoft.Storage/storageAccounts/myaks20220114sto'
+
+```
 STORAGE_ACCOUNT_SCOPE=$(az storage account show \
                             --resource-group myaks-rg \
                             --name $STORAGE_ACCOUNT_NAME \
                             --query id \
                             -o tsv)
+```
 
-# Comprobamos
+Comprobamos
+
+```
 echo $STORAGE_ACCOUNT_SCOPE
+```
 
-# Ahora asignaremos la identidad administrada acceso a la cuenta de almacenamiento.
-# En la interfaz gráfica se hace en: Home / Storage Accounts / <cuenta almacenamiento> / Access Control (IAM) / Role Assignments / add
-# y elegir el rol "Storage Blob Data Contributor" y asignarlo a la idendidad administrada asignada por el usuario 'access-blob-id'
-# para el contexto de la cuenta de almacenamiento. # Con la CLI sería.
+Ahora asignaremos la identidad administrada acceso a la cuenta de almacenamiento. En la interfaz gráfica se hace en: Home / Storage Accounts / <cuenta almacenamiento> / Access Control (IAM) / Role Assignments / add, y elegir el rol "Storage Blob Data Contributor" y asignarlo a la idendidad administrada asignada por el usuario 'access-blob-id' para el contexto de la cuenta de almacenamiento. 
+
+Con la CLI sería.
+
+```
 az role assignment create --assignee $CLIENT_ID --role "Storage Blob Data Contributor" --scope $STORAGE_ACCOUNT_SCOPE 
+```
 
-# Vamos a crear un archivo y lo subiremos al conetenedor (DE BLOB) que vamos a crear. Posteriormente, comprobaremos
-# que podemos acceder al archivo desde un pod de AKS.
+Vamos a crear un archivo y lo subiremos al conetenedor (DE BLOB) que vamos a crear. Posteriormente, comprobaremos que podemos acceder al archivo desde un pod de AKS.
 
-# Vamos a tomar credenciales para poder interactuar con la cuenta de almacenamiento.
-# Los permisos son  (a)dd (c)reate (d)elete (l)ist (p)rocess (r)ead (u)pdate (w)rite (a)dd (c)reate (d)elete (l)ist (p)rocess (r)ead (u)pdate (w)rite.
+Tomamos las credenciales para poder interactuar con la cuenta de almacenamiento.
+
+Los permisos son  (a)dd (c)reate (d)elete (l)ist (p)rocess (r)ead (u)pdate (w)rite (a)dd (c)reate (d)elete (l)ist (p)rocess (r)ead (u)pdate (w)rite.
+
+```
 PERMISSIONS=cdlruwap
+```
 
-# Los servicios para los que se concenden el acceso podrían ser: (b)lob (f)ile (q)ueue (t)able.
+Los servicios para los que se concenden el acceso podrían ser: (b)lob (f)ile (q)ueue (t)able.
+
+```
 SERVICES=b
+```
 
-# Los tipos de recursos para los que solicitamos acceso podrían ser: (s)ervice (c)ontainer (o)bject.
+Los tipos de recursos para los que solicitamos acceso podrían ser: (s)ervice (c)ontainer (o)bject.
+
+```
 RESOURCE_TYPES=sco
+```
 
-# Solicitamos de la clave SAS expire en 30 minutos (es el tiempo que tenemos para crear el contenedor y subir el archivo.)
+Solicitamos de la clave SAS expire en 30 minutos (es el tiempo que tenemos para crear el contenedor y subir el archivo.)
+
+```
 END=`date -u -d "30 minutes" '+%Y-%m-%dT%H:%MZ'`
+```
 
-# Ejecutar el comando para obtener la SAS. Como es la primera vez, aparece una advertencia. A partir de ahora usaremos
-# el token SAS generado para autenticarnos desde la CLI
+Ejecutar el comando para obtener la SAS. Como es la primera vez, aparece una advertencia. A partir de ahora usaremos el token SAS generado para autenticarnos desde la CLI.
+
+```
 STORAGE_ACCOUNT_SAS_TOKEN=$(az storage account generate-sas \
                                 --permissions $PERMISSIONS \
                                 --account-name $STORAGE_ACCOUNT_NAME \
@@ -620,63 +681,106 @@ STORAGE_ACCOUNT_SAS_TOKEN=$(az storage account generate-sas \
                                 --resource-types $RESOURCE_TYPES \
                                 --expiry $END \
                                 -o tsv)
+```
 
-# Probamos
+Probamos
+
+```
 echo $STORAGE_ACCOUNT_SAS_TOKEN
+```
 
-# Creamos el contenedor de BLOB que será de tipo privado.
+Creamos el contenedor de BLOB que será de tipo privado.
+
+```
 BLOB_CONTAINER_NAME=uploadedfiles
+
 az storage container create \
     --name $BLOB_CONTAINER_NAME \
     --account-name $STORAGE_ACCOUNT_NAME \
     --sas-token $STORAGE_ACCOUNT_SAS_TOKEN
+```
 
-# El contenedor de BLOB creado se puede ver en la GUI en: 'Home / Resource groups / myaks-rg / <cuenta de almacenamiento> / $BLOB_CONTAINER_NAME'
+El contenedor de BLOB creado se puede ver en la GUI en: 'Home / Resource groups / myaks-rg / <cuenta de almacenamiento> / $BLOB_CONTAINER_NAME'
 
-# Cambiamos al directorio de trabajo.
-cd ~/k8sAzure/Identidad_administrada
+Cambiamos al directorio de trabajo.
 
-# Creamos un archivo de prueba par demostrar todo esto.
+```
+cd ./Identidad_administrada
+```
+
+Creamos un archivo de prueba comprobar que todo va funcionando.
+
+```
 echo "Este es un archivo de texto almacenado en un BLOB en un contenedor de BLOBs de una cuenta de almacenamiento en Azure" > file.txt
+```
 
-# Procedemos a subir el archivo a la cuenta de almacenamiento.
+Procedemos a subir el archivo a la cuenta de almacenamiento.
+
+```
 FILENAME_IN_AZURE=file_in_Azure.txt
-az storage blob upload --file ./file.txt --container-name $BLOB_CONTAINER_NAME --name $FILENAME_IN_AZURE.txt  --account-name $STORAGE_ACCOUNT_NAME --sas-token $STORAGE_ACCOUNT_SAS_TOKEN
 
-# Vamos a intentar acceder al archivo desde un pod. Para ello crearemos un nuevo desployment que contendrá un vínculo con
-# la identidad administrada que creamos anteriormente. Editamos el archivo 'deployment-with-identity.yaml'
+az storage blob upload \
+    --file ./file.txt \
+    --container-name $BLOB_CONTAINER_NAME \
+    --name $FILENAME_IN_AZURE.txt  \
+    --account-name $STORAGE_ACCOUNT_NAME \
+    --sas-token $STORAGE_ACCOUNT_SAS_TOKEN
+
+Vamos a intentar acceder al archivo desde un pod. Para ello crearemos un nuevo desployment que contendrá un vínculo con la identidad administrada que creamos anteriormente. Editamos el archivo 'deployment-with-identity.yaml'.
+
+```
 code deployment-with-identity.yaml
+```
 
-# Línea 13:     Se asocia el pod (creado por el deployment) con la identidad administrada. Cualquier pod con esa
-#               etiqueta (label) podrá acceder a la identidad administrada.
-#
-# Líneas 16-18: Se usará la imagen 'azure-cli' que proporcionará los comandos 'az' dentro del pod.
+```
+Línea 13:     Se asocia el pod (creado por el deployment) con la identidad administrada. Cualquier pod con esa
+              etiqueta (label) podrá acceder a la identidad administrada.
 
-# Creamos el deployment
+Líneas 16-18: Se usará la imagen 'azure-cli' que proporcionará los comandos 'az' dentro del pod.
+```
+
+Creamos el deployment
+
+```
 kubectl create -f deployment-with-identity.yaml
+```
 
-# Comprobamos.
+Comprobamos.
+
+```
 kubectl get pods
+```
 
-# Mostrar el valor de las variables. Necesitaremos copiarlas al pod.
+Mostrar el valor de las variables. Necesitaremos copiarlas al pod.
+
+```
 echo $CLIENT_ID
 echo $STORAGE_ACCOUNT_NAME
 echo $BLOB_CONTAINER_NAME
 echo $FILENAME_IN_AZURE
 
+```
 
-# Cuando el pod esté iniciado abrimos una shell en él.
+
+Cuando el pod esté iniciado abrimos una shell en él.
+
+```
 kubectl exec -it <access-blob pod name> -- sh
+```
 
-# IMPORTANTE!!!! DENTRO DEL POD.
-# Nos autenticamos con la API de Azure usando la identidad creada (El deployment permite usarla en los pods)
+IMPORTANTE!!!! DENTRO DEL POD. Nos autenticamos con la API de Azure usando la identidad creada (El deployment permite usarla en los pods)
+
+```
 az login \
     --identity \
     --username <CLIENT ID COPIADO ANTES> \
     --allow-no-subscription \
     -o table
+```
 
-# Intentamos acceder con esa identidad al BLOB. Copiar y pegar las variables.
+Intentamos acceder con esa identidad al BLOB. Copiar y pegar las variables.
+
+```
 FILENAME=file.txt
 az storage blob download \
     --account-name <STORAGE_ACCOUNT_NAME> \
@@ -685,64 +789,100 @@ az storage blob download \
     --name <FILENAME_IN_AZURE> \
     --file $FILENAME \
     -o table
+```
 
-# Comprobamos que lo ha descargado sin problemas.
+Comprobamos que lo ha descargado sin problemas.
+
+```
 ls -l file.txt
+```
+
+```
 cat file.txt
+```
 
-# Salimos del pod
+Salimos del pod
+
+```
 exit 
+```
 
-# Ahora volvemos a hacerlo mismo, pero con la diferencia que el deployment no incorpora la identidad administrada, por lo que
-# el pod NO PODRÁ acceder al BLOB.
+Ahora volvemos a hacerlo mismo, pero con la diferencia que el deployment no incorpora la identidad administrada, por lo que el pod NO PODRÁ acceder al BLOB.
 
-# Editamos el archivo 'deployment-without-identity'
+Editamos el archivo 'deployment-without-identity'.
+
+```
 code deployment-without-identity.yaml
+```
 
-# Comprobar que ya no existe la etiqueta 'aadpodidbinding: access-blob-id¡
+Comprobar que ya no existe la etiqueta 'aadpodidbinding: access-blob-id'
 
-# Desplegamos
+Desplegamos.
+
+```
 kubectl create -f deployment-without-identity.yaml
+```
 
-# Comprobamos
+Comprobamos.
+
+```
 kubectl get pods
+```
 
-# Ejecutamos una shell en el contenedor.
+Ejecutamos una shell en el contenedor.
+
+```
 kubectl exec -it <no-access-blob pod name> -- sh
+```
 
-# Intentamos autenticarnos en la API de Azure usando el mismo CLIENT-ID.
-# Fallará porque el deployment no ha asignado al pod dicha identidad administrada.
+Intentamos autenticarnos en la API de Azure usando el mismo CLIENT-ID. Fallará porque el deployment no ha asignado al pod dicha identidad administrada.
+
+```
 az login \
     --identity \
     --username <CLIENT ID COPIADO ANTES> \
     --allow-no-subscription \
     -o table
+```
 
-# Salimos del contenedor
+Salimos del contenedor
+
+```
 exit 
+```
 
-# Borramos, pero no todo, porque necesitaremos el cluster configurado para poder
-# usar identidades administradas de Azure AD para acceder al 'Key Vault'
+Borramos, pero no todo, porque necesitaremos el cluster configurado para poder usar identidades administradas de Azure AD para acceder al 'Key Vault'
 
-# Eliminamos la identidad administrada que creamos.
+Eliminamos la identidad administrada que creamos.
+
+```
 az aks pod-identity delete \
     --resource-group myaks-rg \
     --cluster-name myaks \
     --namespace default \
     --name access-blob-id
+```
 
-# Eliminamos deployments.
+Eliminamos deployments.
+
+```
 kubectl delete -f deployment-with-identity.yaml
 kubectl delete -f deployment-without-identity.yaml
+```
 
-# Comprobamos.
+Comprobamos.
+
+```
 kubectl get all
+```
 
-# Borramos la cuenta de almacenamiento.
+Borramos la cuenta de almacenamiento.
+```
 az storage account delete \
     --name $STORAGE_ACCOUNT_NAME \
     --resource-group myaks-rg \
     --yes
+```
 
 Limpiamos
 ```
