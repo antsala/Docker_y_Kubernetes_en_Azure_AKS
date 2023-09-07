@@ -319,12 +319,25 @@ az account clear
 
 IMPORTANTE: Para que Luke pueda interactuar con la subscripción hay que asignarle un rol en la misma. Lo hacemos con la interfaz web de azure: ***Home/Subscriptions/MSDN Platforms/Access Control (IAM)***
 
-Asignar a ***Luke*** el rol de ***contibuidor*** a la subscripción.
+Asignar a ***Luke*** el rol de ***contribuidor*** a la subscripción.
 
-Iniciamos sesión con el usuario ***Luke@antsalgrahotmail.onmicrosoft.com*** y password ***useTheForce#***
+Iniciamos sesión 
 ```
 az login 
 ```
+
+Usuario:
+
+```
+luke@antsalgrahotmail.onmicrosoft.com
+```
+
+password:
+
+```
+useTheForce#
+```
+
 
 
 ¡¡¡¡MUY IMPORTANTE!!!!
