@@ -235,6 +235,8 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
    - Crear un usuario y un grupo de seguridad para asignar roles.
    - ***Configurar*** RBAC en AKS.
    - ***Verificar*** RBAC para el usuario Luke.
+   - ***Asignar identidades de AAD*** a los pods.
+
 
 4. Laboratorio 65-D: ***Despliegue Canary***. Ejercicios: 
    - ¿Qué es un despliegue ***Canary***?.

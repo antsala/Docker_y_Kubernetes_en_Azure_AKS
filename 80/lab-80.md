@@ -139,7 +139,7 @@ az vmss stop \
     --instance-id $INSTANCE_ID
 ```
 
-Observar como 'curl' no obtiene respuesta mientras se rebalancea el cluster. Comprobar como el estado del nodo es 'NotReady'.
+Observar, en la otra terminal, como 'curl' no obtiene respuesta mientras se rebalancea el cluster. Comprobar como el estado del nodo es 'NotReady'.
 
 ```
 kubectl get nodes
