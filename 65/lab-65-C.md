@@ -323,7 +323,15 @@ Asignar a ***Luke*** el rol de ***contribuidor*** a la subscripción.
 
 IMPORTANTE. En la documentación de Azure se puede leer.
 ```
-Azure AD integrated clusters using a Kubernetes version newer than version 1.24 automatically use the kubelogin format. Starting with Kubernetes version 1.24, the default format of the clusterUser credential for Azure AD clusters is exec, which requires kubelogin binary in the execution PATH. There is no behavior change for non-Azure AD clusters, or Azure AD clusters running a version older than 1.24. Existing downloaded kubeconfig continues to work. An optional query parameter format is included when getting clusterUser credential to overwrite the default behavior change. You can explicitly specify format to azure if you need to maintain the old kubeconfig format.
+Azure AD integrated clusters using a Kubernetes version newer than version 1.24 
+automatically use the kubelogin format. Starting with Kubernetes version 1.24, 
+the default format of the clusterUser credential for Azure AD clusters is exec,
+which requires kubelogin binary in the execution PATH. There is no behavior change 
+for non-Azure AD clusters, or Azure AD clusters running a version older than 1.24. 
+ 
+Existing downloaded kubeconfig continues to work. An optional query parameter format 
+is included when getting clusterUser credential to overwrite the default behavior change. 
+You can explicitly specify format to azure if you need to maintain the old kubeconfig format.
 ```
 
 Que viene a decir que desde la versión 1.24 del cluster, el formato de la credencial para el cluster ha cambiado, usando el formato 'kubelogin' en lugar del de 'azure' tradicional.
