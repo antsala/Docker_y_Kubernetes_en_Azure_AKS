@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smartwhale-deployment
+  labels:
+    app: smartwhale-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: smartwhale
+  template:
+    metadata:
+      labels:
+        app: smartwhale
+    spec:
+      containers:
+      - name: smartwhale
+        image: <acr-name>.azurecr.io/antsala/smartwhale:latest
+        
