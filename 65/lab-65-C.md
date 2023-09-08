@@ -862,7 +862,7 @@ kubectl exec -it <access-blob pod name> -- sh
 IMPORTANTE!!!! DENTRO DEL POD. Nos autenticamos con la API de Azure usando la identidad creada (El deployment permite usarla en los pods)
 
 ```
-az login --identity --username $CLIENT_ID --allow-no-subscription -o table
+az login --identity --username <Valor de CLIENT_ID mostrado antes> --allow-no-subscription -o table
 ```
 
 Intentamos acceder con esa identidad al BLOB. Copiar y pegar las variables.
