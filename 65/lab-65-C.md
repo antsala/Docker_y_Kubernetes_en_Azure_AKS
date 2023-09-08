@@ -695,7 +695,7 @@ Usar un pod con una identidad administrada.
 Vamos a crear una cuenta de almacenamiento y usaremos la identidad administrada para acceder a ella.
 
 ```
-STORAGE_ACCOUNT_NAME=myaks<Pon aquí una fecha>20220114sto
+STORAGE_ACCOUNT_NAME=myaks<Pon aquí una fecha>sto
 ```
 
 ```
@@ -725,7 +725,7 @@ Comprobamos
 echo $STORAGE_ACCOUNT_SCOPE
 ```
 
-Ahora asignaremos la identidad administrada acceso a la cuenta de almacenamiento. En la interfaz gráfica se hace en: Home / Storage Accounts / <cuenta almacenamiento> / Access Control (IAM) / Role Assignments / add, y elegir el rol "Storage Blob Data Contributor" y asignarlo a la idendidad administrada asignada por el usuario 'access-blob-id' para el contexto de la cuenta de almacenamiento. 
+Ahora asignaremos a la identidad administrada acceso a la cuenta de almacenamiento. En la interfaz gráfica se hace en: Home / Storage Accounts / cuenta  de almacenamiento / Access Control (IAM) / Role Assignments / add, y elegir el rol "Storage Blob Data Contributor" y asignarlo a la idendidad administrada asignada por el usuario 'access-blob-id' para el contexto de la cuenta de almacenamiento. 
 
 Con la CLI sería.
 
@@ -862,9 +862,9 @@ kubectl exec -it <access-blob pod name> -- sh
 IMPORTANTE!!!! DENTRO DEL POD. Nos autenticamos con la API de Azure usando la identidad creada (El deployment permite usarla en los pods)
 
 ```
-az login \
+az login 
     --identity \
-    --username <CLIENT ID COPIADO ANTES> \
+    --username $CLIENT_ID \
     --allow-no-subscription \
     -o table
 ```
