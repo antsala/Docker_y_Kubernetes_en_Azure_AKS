@@ -157,7 +157,7 @@ az role assignment create \
 El resultado de esta acción se puede ver en la GUI en: ***Home/Kubernetes services/myaks/Access 
 control (IAM)/Role Assignments***
 
-El rol ***Azure Kubernetes Service Cluster User Role***, tiene como descripción ***List cluster user credential action***, que permite tomar las credenciales de ese usuario en el cluster y almacenarlas en ***.kube/config***, para que posteriormente ***kubectl*** pueda usarlas.
+El rol ***Azure Kubernetes Service Cluster User User Role***, tiene como descripción ***List cluster user credential action***, que permite tomar las credenciales de ese usuario en el cluster y almacenarlas en ***.kube/config***, para que posteriormente ***kubectl*** pueda usarlas.
 
 NOTA: Si se hubiera usado la ***CloudShell***, también habría que dar permisos a ***AKS_USERS_GROUP_ID*** para la cuenta de almacenamiento donde reside la CloudShell. En este ejemplo no la usamos.
 
@@ -439,8 +439,15 @@ az account clear
 az login
 ```
 
-Iniciamos sesión como el administrador.
+Actualmente el cluster tiene configurado RBAC y la autenticación de AAD. Actualizamos credenciales:
+```
+az aks get-credentials \
+    --resource-group myaks-rg \
+    --name myaks \
+    --overwrite-existing
+```
 
+Alternativamente podemos saltarnos la autenticación de AAD y tener credenciales de administrador en el cluster así:
 ```
 az aks get-credentials \
     --resource-group myaks-rg \
@@ -448,6 +455,34 @@ az aks get-credentials \
     --overwrite-existing \
     --admin
 ```
+
+IMPORTANTE. Nos hemos autenticado con el usuario administrador del tenant, pero 'kubectl' tiene dos contextos almacenado. Uno para el usuario 'admin' y otro para 'luke' (que no es administrador). Podemos ver los contextos con el siguiente comando.
+
+```
+kubectl config get-contexts
+```
+
+La salida será como la siguiente:
+```
+CURRENT   NAME                          CLUSTER   AUTHINFO                      NAMESPACE                   
+*         myaks                         myaks     clusterUser_myaks-rg_myaks    
+          myaks-admin                   myaks     clusterAdmin_myaks-rg_myaks   
+```
+
+Observa cómo el contexto actual sigue siendo 'myaks'. Este contexto lo usa el usuario 'luke' cuando se loga. Como nosotros estamos autenticados con el administrador, debemos conmutar a un contexto que nos permita realizar labores de administración en el cluster. Es decir, debemos cambiar al contexto 'myaks-admin'.
+
+```
+kubectl config use-context myaks-admin
+```
+
+Comprobamos que ahora estamos en el contecto 'myaks-admin'.
+
+```
+kubectl config get-contexts
+```
+
+
+
 
 ## Ejercicio 7: Asignar identidades de AAD a los pods.
 
