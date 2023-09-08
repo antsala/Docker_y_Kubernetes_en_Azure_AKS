@@ -1358,7 +1358,10 @@ Crear y asociar identidad al cluster.
 Para empezar, vamos a crear una nueva identidad administrada asignada por el usuario en Azure.
 
 ```
-az identity create --resource-group myaks-rg --name csi-to-key-vault --location westeurope 
+az identity create \
+    --resource-group myaks-rg \ 
+    --name csi-to-key-vault \
+    --location westeurope 
 ```
 
 En la GUI se puede ver la identidad administrada en Home / Managed Identities / csi-to-key-vault. Una vez creada, necesitamos copiar el 'Principal ID' (identificador único de la identidad en AAD) y el 'id' (identificador del recurso), que serán usados en breve.
@@ -1440,8 +1443,13 @@ Instalar el drive CSI para el Key Vault.
 
 Vamos a configurar el drive CSI en el cluster. Esto va a permitirnos recuperar los secretos posterioremente. La mejor forma de instalar del driver CSI es usar Helm.
 
+Si no estuviera instalado, lo instalamos.
 ```
-helm repo add csi-secrets-store-provider-azure  https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts
+sudo snap install helm --classic
+```
+
+```
+helm repo add csi-secrets-store-provider-azure  https://azure.github.io/secrets-store-csi-driver-provider-azure/charts
 ```
 
 
