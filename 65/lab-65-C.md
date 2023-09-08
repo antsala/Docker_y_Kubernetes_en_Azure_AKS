@@ -157,7 +157,7 @@ az role assignment create \
 El resultado de esta acción se puede ver en la GUI en: ***Home/Kubernetes services/myaks/Access 
 control (IAM)/Role Assignments***
 
-El rol ***Azure Kubernetes Service Cluster Role***, tiene como descripción ***List cluster user credential action***, que permite tomar las credenciales de ese usuario en el cluster y almacenarlas en ***.kube/config***, para que posteriormente ***kubectl*** pueda usarlas.
+El rol ***Azure Kubernetes Service Cluster User Role***, tiene como descripción ***List cluster user credential action***, que permite tomar las credenciales de ese usuario en el cluster y almacenarlas en ***.kube/config***, para que posteriormente ***kubectl*** pueda usarlas.
 
 NOTA: Si se hubiera usado la ***CloudShell***, también habría que dar permisos a ***AKS_USERS_GROUP_ID*** para la cuenta de almacenamiento donde reside la CloudShell. En este ejemplo no la usamos.
 
@@ -439,15 +439,8 @@ az account clear
 az login
 ```
 
-Actualmente el cluster tiene configurado RBAC y la autenticación de AAD. Actualizamos credenciales:
-```
-az aks get-credentials \
-    --resource-group myaks-rg \
-    --name myaks \
-    --overwrite-existing
-```
+Iniciamos sesión como el administrador.
 
-Alternativamente podemos saltarnos la autenticación de AAD y tener credenciales de administrador en el cluster así:
 ```
 az aks get-credentials \
     --resource-group myaks-rg \
