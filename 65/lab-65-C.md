@@ -801,7 +801,7 @@ cd ./Identidad_administrada
 Creamos un archivo de prueba comprobar que todo va funcionando.
 
 ```
-echo "Este es un archivo de texto almacenado en un BLOB en un contenedor de BLOBs de una cuenta de almacenamiento en Azure" > file.txt
+echo "Este es un archivo de texto (BLOB), almacenado en un contenedor de BLOBs de una cuenta de almacenamiento en Azure" > file.txt
 ```
 
 Procedemos a subir el archivo a la cuenta de almacenamiento.
@@ -922,11 +922,7 @@ kubectl exec -it <no-access-blob pod name> -- sh
 Intentamos autenticarnos en la API de Azure usando el mismo CLIENT-ID. Fallará porque el deployment no ha asignado al pod dicha identidad administrada.
 
 ```
-az login \
-    --identity \
-    --username <CLIENT ID COPIADO ANTES> \
-    --allow-no-subscription \
-    -o table
+az login --identity --username <CLIENT ID COPIADO ANTES> --allow-no-subscription -o table
 ```
 
 Salimos del contenedor
