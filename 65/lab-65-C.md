@@ -1654,7 +1654,6 @@ Esto demuestra que aunque tehgamos un objeto 'SecretProviderClass' que intente s
 Limpiamos los recursos.
 
 ```
-kubectl delete -f .
 helm delete csi-secrets-store-provider-azure/csi-secrets-store-provider-azure
 az aks pod-identity delete \
     --resource-group myks-rg \
