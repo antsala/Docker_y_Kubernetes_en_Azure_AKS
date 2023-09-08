@@ -812,7 +812,7 @@ FILENAME_IN_AZURE=file_in_Azure.txt
 az storage blob upload \
     --file ./file.txt \
     --container-name $BLOB_CONTAINER_NAME \
-    --name $FILENAME_IN_AZURE.txt  \
+    --name $FILENAME_IN_AZURE  \
     --account-name $STORAGE_ACCOUNT_NAME \
     --sas-token $STORAGE_ACCOUNT_SAS_TOKEN
 ```
