@@ -999,43 +999,56 @@ La implementación de secretos por defecto en K8s nos permite almacenar diferent
 ***Bootstrap token secrets***: Se usan para almacenar los 'bearer tokens' que se usan cuando se está creando un nuevo cluster o se está uniendo nuevos nodos a un cluster existente.
 
 Como usuario de K8s, normalmente trabajaremos con 'opaque secrets' y 'TLS certificates'.
-#
-# K8s proporciona tres formas de crear secretos:
-#
-#   1) Crear secretos desde archivos.
-#   2) Crear secretos desde definiciones YAML o JSON.
-#   3) Crear secretos desde la línea de comandos.
-#
-# K8s nos ofrece dos formas de consumir los secretos:
-#
-#   1) Usar los secretos como una variable de entorno.
-#   2) Montar los secretos en un archivo dentro del pod.
 
-#################################
-# Crear secretos desde archivos #
-#################################
+K8s proporciona tres formas de crear secretos:
 
-# La primera forma de crear secretos en Kubernetes es crearlos desde un archivo. De esta manera,
-# el contenido del archivo se convertirá en el valor del secreto, y el nombre del archivo será el
-# identificador de cada valor del secreto.
+1. Crear secretos desde archivos.
+2. Crear secretos desde definiciones YAML o JSON.
+3. Crear secretos desde la línea de comandos.
 
-# Cambiamos al directorio de trabajo.
-cd ~/k8sAzure/Secretos
+K8s nos ofrece dos formas de consumir los secretos:
 
-# Supongamos que tenemos que almacenar una URL y un token seguro para el acceso a una API.
+1. Usar los secretos como una variable de entorno.
+2. Montar los secretos en un archivo dentro del pod.
 
-# Almacenamos la URL en el archivo 'secreturl.txt'
+
+Crear secretos desde archivos.
+
+
+La primera forma de crear secretos en Kubernetes es crearlos desde un archivo. De esta manera,el contenido del archivo se convertirá en el valor del secreto, y el nombre del archivo será el identificador de cada valor del secreto.
+
+Cambiamos al directorio de trabajo.
+
+```
+cd ~/Docker_y_Kubernetes_en_Azure_AKS/65/Secretos
+```
+
+
+Supongamos que tenemos que almacenar una URL y un token seguro para el acceso a una API.
+
+Almacenamos la URL en el archivo 'secreturl.txt'
+
+```
 echo https://my-url-location.topsecret.com > secreturl.txt
+```
 
-# Almacenamos el token en otro archivo.
+Almacenamos el token en otro archivo.
+
+```
 echo 'superSecretToken' > secrettoken.txt
+```
 
-# Hacemos que Kubernetes cree el secreto a partir de estos archivos.
-# El tipo de secreto que se va a crear es 'opaco' porque usamos 'generic' en el siguiente comando.
+Hacemos que Kubernetes cree el secreto a partir de estos archivos. El tipo de secreto que se va a crear es 'opaco' porque usamos 'generic' en el siguiente comando.
+
+```
 kubectl create secret generic myapi-url-token --from-file=./secreturl.txt --from-file=./secrettoken.txt
+```
 
-# Para ver los secretos.
+Para ver los secretos.
+
+```
 kubectl get secrets
+```
 
 # El secreto de tipo opaco, significa que, desde la perspectiva de K8s, el esquema de los contenidos no
 # se conoce. Es una pareja clave-valor arbitraria, sin restricciones, a diferencia de, por ejemplo, los 
