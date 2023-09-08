@@ -1284,9 +1284,9 @@ Ahora tomamos el identificador de contenedor que corre en el pod, que será algo
 kubectl describe pod secret-using-env | grep 'Container ID'
 ```
 
-Ejecutaremos un comando en el nodo que está ejecutando el contenedor para mostrsr el secreto que se ha pasado como variable de entorno. Para ello cargamos una variables que usaremos luego.
+Ejecutaremos un comando en el nodo que está ejecutando el contenedor para mostrar el secreto que se ha pasado como variable de entorno. Para ello cargamos una variables que usaremos luego.
 
-`````
+```
 NODE_INSTANCE_ID=<PONER AQUÍ EL ID DE LA INSTANCIA DEL NODO>
 ```
 
