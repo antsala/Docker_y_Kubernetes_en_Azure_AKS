@@ -1050,194 +1050,267 @@ Para ver los secretos.
 kubectl get secrets
 ```
 
-# El secreto de tipo opaco, significa que, desde la perspectiva de K8s, el esquema de los contenidos no
-# se conoce. Es una pareja clave-valor arbitraria, sin restricciones, a diferencia de, por ejemplo, los 
-# secretos TLS o la autenticación SSH, que tienen un esquema y se comprobará que dispongan de los 
-# detalles requeridos.
+El secreto de tipo 'opaco', significa que, desde la perspectiva de K8s, el esquema de los contenidos no se conoce. Es una pareja clave-valor arbitraria, sin restricciones, a diferencia de, por ejemplo, los secretos TLS o la autenticación SSH, que tienen un esquema.
 
-# Describamos el secreto. Observar que no se muestran los secretos.
+Describamos el secreto. Observar que no se muestran los secretos.
+
+```
 kubectl describe secrets myapi-url-token
+```
 
-# Para visualizar el valor del secreto, se ejecuta el siguiente comando.
+Para visualizar el valor del secreto, se ejecuta el siguiente comando.
+
+```
 kubectl get -o yaml secrets/myapi-url-token
+```
 
-# Los datos se almacenan como pareja clave-valor, con el nombre del archivo como clave y el valor como el
-# contenido de dicho archivo codificado en Base64.
+Los datos se almacenan como pareja clave-valor, con el nombre del archivo como clave y el valor como el contenido de dicho archivo codificado en Base64.
 
-# Se puede hacer la decodificación para obtener los valores originales del secreto.
+Se puede hacer la decodificación para obtener los valores originales del secreto.
+
+```
 echo '<PEGAR AQUÍ EL VALOR EN BASE64>' | base64 -d
+```
 
-# Esto demuestra que los secretos no se almacenan de forma encriptada segura en el almacen de secretos
-# por defecto de Kubernetes.
+Esto demuestra que los secretos no se almacenan de forma encriptada segura en el almacén de secretos por defecto de Kubernetes.
 
-############################################
-# Crear secretos a partir de archivos YAML #
-############################################
 
-# Supongamos que necesitamos almacenar como secretos los dos datos anteriores: la URL y el token seguro, que
-# respectivamente eran:  'https://my-secret-url-location.topsecret.com' y  'superSecretToken'.
-# Lo primero que tenemos que hacer es codificarlo en base64.
+Crear secretos a partir de archivos YAML.
+
+
+Supongamos que necesitamos almacenar como secretos los dos datos anteriores: la URL y el token seguro, que respectivamente eran:  'https://my-secret-url-location.topsecret.com' y 'superSecretToken'.
+
+Lo primero que tenemos que hacer es codificarlo en base64.
+
+```
 echo 'https://my-secret-url-location.topsecret.com' | base64
 echo 'superSecretToken' | base64
+```
 
-# A continuación debemos editar un archivo YAML para definir los secretos. El achivo ya está creado. Lo editamos.
+A continuación debemos editar un archivo YAML para definir los secretos. El achivo ya está creado. Lo editamos.
+
+```
 code myfirstsecret.yaml
+```
 
-# Línea 2:      Especifica que estamos creando un secreto.
-#
-# Línea 5:      Especifica que estamos creando un secreto opaco, es decir, que los valores son parejas clave-valor
-#               sin ningún tipo de restricción.
-#
-# Líneas 7-8:   Aquí se ponen las claves y los valores condificados en base64.
+```
+Línea 2:      Especifica que estamos creando un secreto.
 
-# Para crear el secreto partiendo de un archivo YAML, escribirmos.
+Línea 5:      Especifica que estamos creando un secreto opaco, es decir, que los valores 
+              son parejas clave-valor sin ningún tipo de restricción.
+
+Líneas 7-8:   Aquí se ponen las claves y los valores condificados en base64.
+```
+
+Para crear el secreto partiendo de un archivo YAML, escribirmos.
+
+```
 kubectl create -f myfirstsecret.yaml
+```
 
-# Comprobamos.
+Comprobamos.
+
+```
 kubectl get secrets
+```
 
-# Podemos comprobar que los secretos son los mismos con el comando.
+Podemos comprobar que los secretos son los mismos con el comando.
+
+```
 kubectl get -o yaml secrets myapiurltoken-yaml
+```
 
-##############################################
-# Crear secretos usando literales en kubectl #
-##############################################
 
-# Con este método creamos el secreto pasando el valor en la línea de comandos de kubectl.
+Crear secretos usando literales en kubectl.
+
+
+Con este método creamos el secreto pasando el valor en la línea de comandos de kubectl.
+
+```
 kubectl create secret generic myapiurltoken-literal \
     --from-literal=token='superSecretToken' \
     --from-literal=url=https://my-secret-url-location.topsecret.com
+```
 
-# Comprobamos.
+Comprobamos.
+
+```
 kubectl get secrets
+```
 
-#########################
-# Consumir los secretos #
-#########################
 
-# Kubernetes ofrece dos formas de usar los secretos: Por medio de variables de entorno o montando los secretos como archivos 
-# (Esta última es la más práctica)
+Consumir los secretos.
 
-######################################
-# Secretos como variables de entorno #
-######################################
 
-# Editamos el archivo 'pod-with-env-secrets.yaml'
+Kubernetes ofrece dos formas de usar los secretos: Por medio de variables de entorno o montando los secretos como archivos (Esta última es la más práctica)
+
+
+Secretos como variables de entorno.
+
+
+Editamos el archivo 'pod-with-env-secrets.yaml'.
+
+```
 code pod-with-env-secrets.yaml
+```
 
-# Línea 9:      Aquí configuramos las variables de entorno que verá el pod.
-#
-# Línea 10-14 : Aquí se hace referencia al archivo 'secreturl.txt' almacenado en el secreto 'myapi-url-token'
-#
-# Línea 15-19 : Aquí se hace referencia al archivo 'secrettoken.txt' almacenado en el secreto 'myapi-url-token'
+```
+Línea 9:      Aquí configuramos las variables de entorno que verá el pod.
 
-# Cuando Kubernetes crea un pod en un nodo que necesita usar un secreto, almacenará el secreto en el 'tmpfs' de
-# dicho nodo. 'tmpfs' es un sistema de archivo temporal que reside en la memoria del nodo. Cuando el último pod
-# que referencia el sereto se elimina del nodo, el secreto es borrado del tmpfs de dicho nodo.
+Línea 10-14 : Aquí se hace referencia al archivo 'secreturl.txt' almacenado 
+              en el secreto 'myapi-url-token'
 
-# Creamos el pod.
+Línea 15-19 : Aquí se hace referencia al archivo 'secrettoken.txt' almacenado 
+              en el secreto 'myapi-url-token'
+```
+
+Cuando Kubernetes crea un pod en un nodo que necesita usar un secreto, almacenará el secreto en el 'tmpfs' de dicho nodo. 'tmpfs' es un sistema de archivo temporal que reside en la memoria del nodo. Cuando el último pod que referencia el sereto se elimina del nodo, el secreto es borrado del tmpfs de dicho nodo.
+
+Creamos el pod.
+
+```
 kubectl create -f pod-with-env-secrets.yaml
+```
 
-# Verificamos que el pod está corriendo.
+Verificamos que el pod está corriendo.
+
+```
 kubectl get pods
+```
 
-# Creamos una shell en el pod.
+Creamos una shell en el pod.
+
+```
 kubectl exec -it secret-using-env -- sh
+```
 
-# Comprobamos que el pod puede acceder a los secretos.
+Comprobamos que el pod puede acceder a los secretos.
+
+```
 echo $SECRET_URL
 echo $SECRET_TOKEN
+```
 
-# Salimos del pod.
+Salimos del pod.
+
+```
 exit 
+```
 
-# Comentarios sobre este ejemplo:
-#
-#   1)  Nótese que cuando accedemos a las variable de entorno, lo que obtenemos es el valor real del secreto y no
-#       el valor codificado en base64. La codificación base64 solo se aplica en el nivel de la API de Kubernetes, 
-#       no en el nivel de la aplicación.
-#
-#   2)  Es importante aplicar los niveles correctos de RBAC a los pods, de forma que no todos los usuarios del 
-#       cluster sean capaces de hacer un 'exec' al contenedor y leer los secretos.
-#
-#   3)  Los secretos que se utilizan como variables de entorno tienen la limitación de que el valor de la variable
-#       no se actualizará si el propio secreto es actualizado en K8s.
+Comentarios sobre este ejemplo:
 
-##########################
-# Secretos como archivos #
-##########################
+1. Nótese que cuando accedemos a las variable de entorno, lo que obtenemos es el valor real del secreto y no el valor codificado en base64. La codificación base64 solo se aplica en el nivel de la API de Kubernetes, no en el nivel de la aplicación.
 
-# Veamos como montar los mismos secretos como archivos en lugar de variables de entorno.
-# editamos el archivo 'pod-with-vol-secret.yaml'.
+2. Es importante aplicar los niveles correctos de RBAC a los pods, de forma que los usuarios del cluster no puedan hacer un 'exec' al contenedor y leer los secretos.
+
+3.  Los secretos que se utilizan como variables de entorno tienen la limitación de que el valor de la variable no se actualizará si el propio secreto es actualizado en K8s.
+
+
+Secretos como archivos.
+
+
+Veamos como montar los mismos secretos como archivos en lugar de variables de entorno. Editamos el archivo 'pod-with-vol-secret.yaml'.
+
+```
 code pod-with-vol-secret.yaml
+```
 
-# Líneas 9-12:  Proporcionamos los detalles del montaje. Se monta en el contenedor en '/etc/secrets' en
-#               forma de solo lectura.
-#
-# Líneas 13-16: Aquí se hace referencia al secreto. Nótese que ambos archivos del secreto serán montados en
-#               el directorio del contenedor.
-#
-# Las aplicaciones necesitan tener código para leer los contenidos del archivo para cargar el secreto.
+```
+Líneas 9-12:  Proporcionamos los detalles del montaje. Se monta en el contenedor en '/etc/secrets' en
+              forma de solo lectura.
 
-# Creamos el pod.
+Líneas 13-16: Aquí se hace referencia al secreto. Nótese que ambos archivos del secreto serán montados en
+              el directorio del contenedor.
+```
+
+Las aplicaciones necesitan tener código para leer los contenidos del archivo para cargar el secreto.
+
+Creamos el pod.
+
+```
 kubectl create -f pod-with-vol-secret.yaml
+```
 
-# Verificamos que el pod está corriendo.
+Verificamos que el pod está corriendo.
+
+```
 kubectl get pods
+```
 
-# Creamos una shell en el contenedor.
+Creamos una shell en el contenedor.
+
+```
 kubectl exec -it secret-using-volume -- sh
+```
 
-# Mostramos los contenidos de los archivos que se han montado.
+Mostramos los contenidos de los archivos que se han montado.
+
+```
 cd /etc/secrets/
 cat secreturl.txt
 cat secrettoken.txt
+```
 
-# Salimos del contenedor.
+Salimos del contenedor.
+
+```
 exit 
+```
 
-# Comentarios sobre este ejemplo:
-#
-#   1)  Nótese que de nuevo los secretos están en texto en claro, no en base64.
-#
-#   2)  Como los secretos se montan como un archivo, se aplican los permisos de archivo a estos secretos.
-#       Esto significa que podemos controlar qué procesos tienen acceso a los contenidos de estos archivos en
-#       base a los mencionados permisos.
-#
-#   3)  Los secretos montados como archivos serán actualizados dinámicamente conforme se actualice el secreto.
+Comentarios sobre este ejemplo:
+
+1. Nótese que de nuevo los secretos están en texto en claro, no en base64.
+
+2. Como los secretos se montan como un archivo, se aplican los permisos de archivo a estos secretos. Esto significa que podemos controlar qué procesos tienen acceso a los contenidos de estos archivos en base a los mencionados permisos.
+
+3. Los secretos montados como archivos serán actualizados dinámicamente conforme se actualice el secreto.
 
 
-################################################################
-# ¿Por qué usar secretos montando archivos es el mejor método? #
-################################################################
 
-# Aunque es una práctica común usar secretos en variables en entorno, es más seguro montar los secretos como 
-# archivos. Kubernetes trata los secretos en variable de entorno de forma segura, cosa que no hace el runtime. 
-# Verifiquemos esto.
+¿Por qué usar secretos montando archivos es el mejor método? 
 
-# Empezamos obteniendo el nodo del pod que usaba las variables de entorno del ejemplo anterior.
-# El nodo tiene la forma 'vmssXXXXXXX', por ejemplo 'vmss000000', quedarse con el número '000000'
+
+Aunque es una práctica común usar secretos en variables en entorno, es más seguro montar los secretos como archivos. Kubernetes trata los secretos en variable de entorno de forma segura, cosa que no hace el runtime. Verifiquemos esto.
+
+Empezamos obteniendo el nodo del pod que usaba las variables de entorno del ejemplo anterior. El nodo tiene la forma 'vmssXXXXXXX', por ejemplo 'vmss000000', quedarse con el número '000000'.
+
+```
 kubectl describe pod secret-using-env | grep Node
+```
 
-# Ahora tomamos el identificador de contenedor que corre en el pod.
-# que será algo así: 'bfafc5ef02e1fa843ed182ee5a2a72f27c77b22bd20368a2dd44719e5a0f2c23'
+Ahora tomamos el identificador de contenedor que corre en el pod, que será algo así: 'bfafc5ef02e1fa843ed182ee5a2a72f27c77b22bd20368a2dd44719e5a0f2c23'.
+
+```
 kubectl describe pod secret-using-env | grep 'Container ID'
+```
 
-# Ejecutaremos un comando en el nodo que está ejecutando el contenedor para mostrsr el secreto que se ha 
-# pasado como variable de entorno. Para ello cargamos una variables que usaremos luego.
-NODE_INSTANCE_ID=000000
-CONTAINER_ID=bfafc5ef02e1fa843ed182ee5a2a72f27c77b22bd20368a2dd44719e5a0f2c23
+Ejecutaremos un comando en el nodo que está ejecutando el contenedor para mostrsr el secreto que se ha pasado como variable de entorno. Para ello cargamos una variables que usaremos luego.
+
+`````
+NODE_INSTANCE_ID=<PONER AQUÍ EL ID DE LA INSTANCIA DEL NODO>
+```
+
+```
+CONTAINER_ID=<PONER AQUÍ EL ID DEL CONTENEDOR>
+```
+
+```
 NODE_RESOURCE_GROUP=$(az aks show \
                         --resource-group myaks-rg \
                         --name myaks \
                         --query nodeResourceGroup \
                         --output tsv)
+
 VMSS=$(az vmss list \
         --resource-group $NODE_RESOURCE_GROUP \
         --query '[].name' \
         --output tsv)
 
-# A partir de la v1.19, K8s usa containerd como runtime y no Docker.
+```
+
+A partir de la v1.19, K8s usa containerd como runtime y no Docker.
+
+```
 az vmss run-command invoke \
     --resource-group $NODE_RESOURCE_GROUP \
     --name $VMSS \
@@ -1245,63 +1318,52 @@ az vmss run-command invoke \
     --instance-id $NODE_INSTANCE_ID \
     --scripts "crictl inspect --output yaml $CONTAINER_ID" \
     --output yaml | grep SECRET
+```
 
-# Como puede verse, los secretos se desdodifican en el comando del runtime de contenedores. 
-# Esto significa que la mayoría de los sistemas de logging registrarán estos secretos. Por ello, 
-# se recomienda usar secretos en archivos porque solo se pasan en texto en claro al pod y a la aplicación.
+Como puede verse, los secretos se desdodifican en el comando del runtime de contenedores. Esto significa que la mayoría de los sistemas de logging registrarán estos secretos. Por ello, se recomienda usar secretos en archivos porque solo se pasan en texto en claro al pod y a la aplicación.
 
-# Limpiamos los recursos.
+Limpiamos los recursos.
+
+```
 kubectl delete pod --all
 kubectl delete secret myapi-url-token myapiurltoken-literal myapiurltoken-yaml
+```
 
-###############################################################################
-# Instalar el proveedor de Key Vault para el drive CSI de almacén de secretos #
-###############################################################################
 
-# En la sección anterior, hemos visto que los secretos se almacenan de forma nativa en K8s
-# codificados en base64, y que esto no es suficientemente seguro, al no estar encriptados.
-# Para entornos altamente seguros, querremos usar un mejor almacén de secretos.
+Instalar el proveedor de Key Vault para el drive CSI de almacén de secretos.
 
-# Azure ofrece una solución de almacenamiento de secretos llamada 'Azure Key Vault'. Es un 
-# servicio administrado que hace que la creación, el almacenamiento y la recuperación de
-# claves y secretos sea sencilla. Ofrece auditoría de acceso a las claves y secretos.
 
-# La comunidad de K8s mantiene un proyecto llamado 'Kubernetes Secrets Store CSI driver', que
-# permite integrar almacenes de secretos externos con volúmenes a través del driver CSI (Container
-# Storage Interface). Los más habituales son Hashicorp Vault, Google Cloud Platform y Azure
-# Key Vault.
+En la sección anterior, hemos visto que los secretos se almacenan de forma nativa en K8s codificados en base64, y que esto no es suficientemente seguro, al no estar encriptados. Para entornos altamente seguros, necesitamos usar algo mejor: El almacén de secretos.
 
-# Microsoft mantiene la implementación del Key Vault para el driver CSI, llamada 'Azure Key Vault 
-# provider for Secrets Store CSI driver'. Esta implementación te permite, como usuario acceder a
-# los secretos del Key Vault desde dentro de Kubernetes.
+Azure ofrece una solución de almacenamiento de secretos llamada 'Azure Key Vault'. Es un servicio administrado que hace que la creación, el almacenamiento y la recuperación de claves y secretos sea sencilla. Ofrece auditoría de acceso a las claves y secretos.
 
-# Lo primero que necesitamos hacer es configurar el driver CSI en el cluster. Posteriormente, 
-# necesitaremos crear un objeto en K8s, llamado 'SecretProviderClass' por cada secreto del Key Vault
-# al que necesites acceder.
+La comunidad de K8s mantiene un proyecto llamado 'Kubernetes Secrets Store CSI driver', que permite integrar almacenes de secretos externos con volúmenes a través del driver CSI (Container Storage Interface). Los más habituales son 'Hashicorp Vault', 'Google Cloud Platform' y 'Azure Key Vault'.
 
-####################################
-# Crear una identidad administrada #
-####################################
+Microsoft mantiene la implementación del Key Vault para el driver CSI, llamada 'Azure Key Vault provider for Secrets Store CSI driver'. Esta implementación te permite, como usuario acceder a los secretos del Key Vault desde dentro de Kubernetes.
 
-# El driver CSI para el Key Vault soporta diferentes formas de obtener datos del Key Vault. Es 
-# recomendable usar una identidad administrada para enlazar el cluster de K8s con el Key Vault.
+Lo primero que necesitamos hacer es configurar el driver CSI en el cluster. Posteriormente, necesitaremos crear un objeto en K8s, llamado 'SecretProviderClass' por cada secreto del Key Vault al que necesites acceder.
 
-# ¡¡¡¡¡¡IMPORTANTE!!!!!!!
-# Para ello necesitamos instalar el complemento de identidad administrada de pod para Azure AD.
-# Esto ya lo hicimos en el apartado 'Configurar un cluster con identidades de pod aministradas de Azure AD'.
-# Si se ha reconstruido el cluster es necesario volver a hacerlo. 
 
-########################################
-# Crear y asociar identidad al cluster #
-########################################
+Crear una Identidad Administrada.
 
-# Para empezar, vamos a crear una nueva identidad administrada asignada por el usuario en Azure.
+
+El driver CSI para el Key Vault soporta diferentes formas de obtener datos del Key Vault. Es recomendable usar una identidad administrada para enlazar el cluster de K8s con el Key Vault.
+
+¡¡¡¡¡¡IMPORTANTE!!!!!!! Para ello necesitamos instalar el complemento de identidad administrada de pod para Azure AD. Esto ya lo hicimos en el ejercicio 6. Si se ha reconstruido el cluster es necesario volver a hacerlo. 
+
+
+Crear y asociar identidad al cluster.
+
+
+Para empezar, vamos a crear una nueva identidad administrada asignada por el usuario en Azure.
+
+```
 az identity create --resource-group myaks-rg --name csi-to-key-vault --location westeurope 
+```
 
-# En la GUI se puede ver la identidad administrada en Home / Managed Identities / csi-to-key-vault
+En la GUI se puede ver la identidad administrada en Home / Managed Identities / csi-to-key-vault. Una vez creada, necesitamos copiar el 'Principal ID' (identificador único de la identidad en AAD) y el 'id' (identificador del recurso), que serán usados en breve.
 
-# Una vez creada, necesitamos copiar el 'Principal ID' (identificador único de la identidad en AAD)
-# y el 'id' (identificador del recurso), que serán usados en breve.
+```
 PRINCIPAL_ID=$(az identity show \
                 --resource-group myaks-rg \
                 --name csi-to-key-vault \
@@ -1312,211 +1374,306 @@ RESOURCE_ID=$(az identity show \
                 --name csi-to-key-vault \
                 --query id \
                 --output tsv)
+```
 
-# Comprobamos
+Comprobamos
+
+```
 echo $PRINCIPAL_ID
 echo $RESOURCE_ID
+```
 
-# Ahora estamos preparados para asociar la identidad administrada al cluster AKS.
+Ahora estamos preparados para asociar la identidad administrada al cluster AKS.
+
+```
 az aks pod-identity add \
     --resource-group myaks-rg \
     --cluster-name myaks \
     --namespace default \
     --name csi-to-key-vault \
     --identity-resource-id $RESOURCE_ID
+```
 
-# Podemos comprobar que la identidad ha sido asignada al cluster y está disponible para su uso, con este comando.
+Podemos comprobar que la identidad ha sido asignada al cluster y está disponible para su uso, con este comando.
+```
 kubectl get azureidentity
+```
 
-######################
-# Crear un Key Vault #
-######################
 
-# El nombre del Key Vault debe ser único globalmente.
-KEY_VAULT_NAME=myKeyVaultASG20220116
+Crear un Key Vault.
+
+
+El nombre del Key Vault debe ser único globalmente.
+
+```
+KEY_VAULT_NAME=myKeyVaultASG<yyyymmdd>
+```
+
+```
 az keyvault create \
     --resource-group myaks-rg \
     --name $KEY_VAULT_NAME \
     --location westeurope
+```
 
-# Asignamos la política de acceso al vault para la identidad administrada. 
-# Damos el permiso 'get' para los secretos.
+Asignamos la política de acceso al vault para la identidad administrada. Damos el permiso 'get' para los secretos.
+
+```
 az keyvault set-policy \
     --name $KEY_VAULT_NAME \
     --object-id $PRINCIPAL_ID \
     --secret-permissions get
+```
 
-# Creamos un secreto.
+Creamos un secreto.
+
+```
 az keyvault secret set \
     --name k8s-secret-demo \
     --vault-name $KEY_VAULT_NAME \
     --value "Secreto proveniente del key vault"
+```
 
-########################################### 
-# Instalar el drive CSI para el Key Vault #
-###########################################
 
-# Vamos a configurar el drive CSI en el cluster. Esto va a permitirnos recuperar los secretos posterioremente.
+Instalar el drive CSI para el Key Vault.
 
-# La mejor forma de instalar del driver CSI es usar Helm.
+
+Vamos a configurar el drive CSI en el cluster. Esto va a permitirnos recuperar los secretos posterioremente. La mejor forma de instalar del driver CSI es usar Helm.
+
+```
 helm repo add csi-secrets-store-provider-azure  https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts
+```
 
-# ¡¡¡¡¡¡¡IMPORTANTE!!!!! Es necesario llamar a helm con el valor '--set secrets-store-csi-driver.syncSecret.enabled=true'	
-# Porque de lo contrario no sincroniza los secretos del Key Vault con los de Kubernetes. En ese caso pod no se 
-# iniciará porque no encuentra el secreto en K8s. Ver ayuda de este parámetro en:
-# https://github.com/Azure/secrets-store-csi-driver-provider-azure/tree/master/charts/csi-secrets-store-provider-azure
+
+¡¡¡¡¡¡¡IMPORTANTE!!!!! Es necesario llamar a helm con el valor '--set secrets-store-csi-driver.syncSecret.enabled=true'	Porque de lo contrario no sincroniza los secretos del Key Vault con los de Kubernetes. En ese caso el pod no se iniciará porque no encuentra el secreto en K8s. Ver ayuda de este parámetro en: https://github.com/Azure/secrets-store-csi-driver-provider-azure/tree/master/charts/csi-secrets-store-provider-azure
+
+```
 helm install csi-secrets-store-provider-azure/csi-secrets-store-provider-azure \
     --generate-name \
     --set secrets-store-csi-driver.syncSecret.enabled=true	
+```
 
-# Comprobamos que la instalación es correcta verificando que la 'SecretProviderClass CRD' ha sido añadida al cluster.
-# CRD = Custom Recource Definition.
+Comprobamos que la instalación es correcta verificando que la 'SecretProviderClass CRD' ha sido añadida al cluster. CRD = Custom Recource Definition.
+
+```
 kubectl get crd
+```
 
-##################################################
-# Montar un secreto de la Key Vault como archivo #
-##################################################
 
-# Necesitamos saber el ID del tenant.
+Montar un secreto de la Key Vault como archivo.
+
+
+Necesitamos saber el ID del tenant.
+
+```
 TENANT_ID=$(az account show --query tenantId)
+```
 
-# Comprobamos.
+Comprobamos.
+
+```
 echo $TENANT_ID
 echo $KEY_VAULT_NAME
+```
 
-# Ahora necesitamos crear un objeto 'SecretProviderClass'. Editamos el archivo 'secretproviderclass-file.yaml'
+Ahora necesitamos crear un objeto 'SecretProviderClass'. Editamos el archivo 'secretproviderclass-file.yaml'
+
+```
 code secretproviderclass-file.yaml
+```
 
-# Línea 2:      Indicamos que estamos creando un objeto 'SecretProviderClass'.
-#
-# Línea 6:      El proveedor del almacen de secretos es Azure (Key Vault)
-#
-# Línea 8:      Indicamos que usaremos identidad administrada de pod para la autenticación. El pod lo añadimos después.
-#
-# Línea 9:      ¡¡¡¡¡¡¡IMPORTANTE!!!!!! Poner el nombre de la la Key Vault.
-#
-# Líneas 10-14: Indicamos el nombre del secreto al que se quiere acceder. 
-#
-# Línea 15:     ¡¡¡¡¡¡¡IMPORTANTE!!!!!! Poner el id del tenant.
+```
+Línea 2:      Indicamos que estamos creando un objeto 'SecretProviderClass'.
 
-# Guardamos los cambios.
+Línea 6:      El proveedor del almacen de secretos es Azure (Key Vault)
 
-# Creamos el objeto.
+Línea 8:      Indicamos que usaremos identidad administrada de pod para la autenticación. 
+              El pod lo añadimos después.
+
+Línea 9:      ¡¡¡¡¡¡¡IMPORTANTE!!!!!! Poner el nombre de la la Key Vault.
+
+Líneas 10-14: Indicamos el nombre del secreto al que se quiere acceder. 
+
+Línea 15:     ¡¡¡¡¡¡¡IMPORTANTE!!!!!! Poner el id del tenant.
+```
+
+Guardamos los cambios.
+
+Creamos el objeto.
+
+```
 kubectl create -f secretproviderclass-file.yaml
+```
 
-# Ahora creamos el pod. Editar el archivo 'pod-keyvault-file.yaml'
+Ahora creamos el pod. Editar el archivo 'pod-keyvault-file.yaml'
+
+```
 code pod-keyvault-file.yaml
+```
+```
+Líneas 5-6:   Aquí enlazamos el pod con la identidad que creamos antes.
 
-# Líneas 5-6:   Aquí enlazamos el pod con la identidad que creamos antes.
-#
-# Líneas 11-14: Definimos donde queremos montar los secretos.
-#
-# Líneas 15-21: Definimos el volumen y el enlace al Key Vault a traves del objeto de la clase
-#               'SecretProviderClass' que creamos antes.
+Líneas 11-14: Definimos donde queremos montar los secretos.
 
-# Creamos el pod.
+Líneas 15-21: Definimos el volumen y el enlace al Key Vault a traves del objeto 
+              de la clase 'SecretProviderClass' que creamos antes.
+```
+
+
+Creamos el pod.
+
+```
 kubectl create -f pod-keyvault-file.yaml
+```
 
-# Comprobamos
+Comprobamos.
+
+```
 kubectl get pods
+```
 
-# Una vez que el pod se ha creado, abrimos una shell en el contenedor.
+Una vez que el pod se ha creado, abrimos una shell en el contenedor.
+
+```
 kubectl exec -it csi-demo-file -- sh
+```
 
-# Probamos.
+Probamos.
+
+```
 cd /mnt/secrets-store
 cat k8s-secret-demo
+```
 
-# Salimos del contenedor.
+Salimos del contenedor.
+
+```
 exit
+```
 
-###########################################################
-# Usar un secreto de la Key Vault con variable de entorno #
-###########################################################
 
-# Es posible sincronizar secretos de la Key Vault con los secretos de Kubernetes y usarlos en
-# variables de entorno visibles para el pod. 
+Usar un secreto de la Key Vault con variable de entorno.
 
-# Es importante observar que, con la idea de que el driver CSI sincronice los secretos del 
-# Key Vault con los secretos de Kubernetes, necesitamos montar el secreto como un volumen en
-# Kubernetes.
 
-# Mostramos para copiar.
+Es posible sincronizar secretos de la Key Vault con los secretos de Kubernetes y usarlos en variables de entorno visibles para el pod. 
+
+Es importante observar que, con la idea de que el driver CSI sincronice los secretos del Key Vault con los secretos de Kubernetes, necesitamos montar el secreto como un volumen en Kubernetes.
+
+Mostramos para copiar.
+
+```
 echo $TENANT_ID
 echo $KEY_VAULT_NAME
+```
 
-# Editamos el archivo 'secretproviderclass-env.yaml'
+Editamos el archivo 'secretproviderclass-env.yaml'
+
+```
 code secretproviderclass-env.yaml
+```
 
-# Línea 9:      ¡¡¡¡¡¡IMPORTANTE!!!!!! Poner el nombre del Key Vault.
-#
-# Línea 15:     ¡¡¡¡¡¡IMPORTANTE!!!!!! Pner el Id del tenant.
-#
-# Las diferencias respecto al ejemplo anterior las encontramos en:
-#
-# Líneas 16-21: Aquí es donde se enlaza el secreto del Key Vault con el secreto de Kubernetes.
-#
-# Línea 17:     'secretName' es el nombre del secreto que se creará en Kubernetes.
-#
-# Línea 20:     'objectName' Se refiere al nombre del secreto en el Vault, el que aparece en la línea 13.
-#
-# Línea 21:     'key' es el nombre de la clave en el secreto de Kubernetes.
+```
+Línea 9:      ¡¡¡¡¡¡IMPORTANTE!!!!!! Poner el nombre del Key Vault.
 
-# Creamos el objeto 'SecretProviderClass'.
+Línea 15:     ¡¡¡¡¡¡IMPORTANTE!!!!!! Pner el Id del tenant.
+
+Las diferencias respecto al ejemplo anterior las encontramos en:
+
+Líneas 16-21: Aquí es donde se enlaza el secreto del Key Vault con el 
+              secreto de Kubernetes.
+
+Línea 17:     'secretName' es el nombre del secreto que se creará en Kubernetes.
+
+Línea 20:     'objectName' Se refiere al nombre del secreto en el Vault, 
+               el que aparece en la línea 13.
+
+Línea 21:     'key' es el nombre de la clave en el secreto de Kubernetes.
+```
+
+Creamos el objeto 'SecretProviderClass'.
+
+```
 kubectl create -f secretproviderclass-env.yaml
+```
 
-# Editamos el archivo 'pod-keyvault-env.yaml'
+Editamos el archivo 'pod-keyvault-env.yaml'.
+
+```
 code pod-keyvault-env.yaml
+```
 
-# La diferencia entre este y el anterior están en las líneas 11 a 16.
+La diferencia entre este y el anterior están en las líneas 11 a 16.
 
-# Creamos el pod.
+Creamos el pod.
+
+```
 kubectl create -f pod-keyvault-env.yaml
+```
 
-# Ejecutamos una shell en el pod.
+Ejecutamos una shell en el pod.
+
+```
 kubectl exec -it csi-demo-env -- sh
+```
 
-# Probamos si se puede leer el secreto como una variable de entorno.
+Probamos si se puede leer el secreto como una variable de entorno.
+
+```
 echo $KEYVAULT_SECRET
+```
 
-# Salimos del contenedor.
+Salimos del contenedor.
 
-# Se puede comprobar que el secreto 'key-vault-secret' fue creado en Kubernetes.
+```
+exit
+```
+
+Se puede comprobar que el secreto 'key-vault-secret' fue creado en Kubernetes.
+
+```
 kubectl get secret
+```
 
-# El secreto desaparecerá cuando ningún pod que monte el secreto esté presente.
+El secreto desaparecerá cuando ningún pod que monte el secreto esté presente.
+
+```
 kubectl delete -f pod-keyvault-env.yaml
 kubectl get secret
+```
 
-# Esto demuestra que aunque tehgamos un objeto 'SecretProviderClass' que intente 
-# sincronizar el secreto de la Key Vault con el secreto de Kubernetes, esa sicronización 
-# solo ocurre una vez que un pod referencia la SecretProviderClass' y monta el secreto.
+Esto demuestra que aunque tehgamos un objeto 'SecretProviderClass' que intente sincronizar el secreto de la Key Vault con el secreto de Kubernetes, esa sicronización solo ocurre una vez que un pod referencia la 'SecretProviderClass' y monta el secreto.
 
-# Limpiamos los recursos.
+Limpiamos los recursos.
+
+```
 kubectl delete -f .
 helm delete csi-secrets-store-provider-azure/csi-secrets-store-provider-azure
 az aks pod-identity delete \
     --resource-group myks-rg \
     --cluster-name myaks \
     --namespace default \
-    --name csi-to-key-vaultt
+    --name csi-to-key-vault
+```
 
-# Eliminar la Key Vault. El siguiente comando la pone en estado soft-delete.
+Eliminar la Key Vault. El siguiente comando la pone en estado soft-delete.
+
+```
 az keyvault delete \
     --resource-group myaks-rg \
     --name $KEY_VAULT_NAME 
+```
 
-# Eliminamos definitivamente la Key Vault.
+Eliminamos definitivamente la Key Vault.
+
+```
 az keyvault purge \
     --name $KEY_VAULT_NAME \
     --location westeurope \
     --no-wait
+```
 
+Limpiamos.
 
-
-
-
-Limpiamos
 ```
 kubectl delete -f lab-65-C-azure-vote.yaml -n no-access
 kubectl delete -f lab-65-C-azure-vote.yaml -n delete-access
