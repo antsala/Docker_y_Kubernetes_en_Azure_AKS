@@ -869,13 +869,10 @@ Intentamos acceder con esa identidad al BLOB. Copiar y pegar las variables.
 
 ```
 FILENAME=file.txt
-az storage blob download \
-    --account-name <STORAGE_ACCOUNT_NAME> \
-    --container-name <BLOB_CONTAINER_NAME> \
-    --auth-mode login \
-    --name <FILENAME_IN_AZURE> \
-    --file $FILENAME \
-    -o table
+```
+
+```
+az storage blob download --account-name <STORAGE_ACCOUNT_NAME> --container-name <BLOB_CONTAINER_NAME> --auth-mode login --name <FILENAME_IN_AZURE> --file $FILENAME -o table
 ```
 
 Comprobamos que lo ha descargado sin problemas.
