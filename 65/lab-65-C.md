@@ -616,13 +616,19 @@ az aks update \
     --enable-pod-identity-with-kubenet
 ```
 
-Volvemos a refrescar as credenciales para kubectl.
+Volvemos a refrescar las credenciales para kubectl.
 
 ```
 az aks get-credentials \
     --resource-group myaks-rg \
     --name myaks \
     --overwrite-existing
+```
+
+Volvemos a seleccionar el contexto de administrador, ya que la actualización de credenciales no pone por defecto la de 'luke'.
+
+```
+kubectl config use-context myaks-admin
 ```
 
 Listamos nodos para comprobar
