@@ -922,7 +922,7 @@ kubectl get pods
 Ejecutamos una shell en el contenedor.
 
 ```
-kubectl exec -it <read-access-blob pod name> -- sh
+kubectl exec -it <no-access-blob pod name> -- sh
 ```
 
 Intentamos autenticarnos en la API de Azure usando el mismo CLIENT-ID. Fallará porque el deployment no ha asignado al pod dicha identidad administrada.
