@@ -925,7 +925,7 @@ Ejecutamos una shell en el contenedor.
 kubectl exec -it <no-access-blob pod name> -- sh
 ```
 
-Intentamos autenticarnos en la API de Azure usando el mismo CLIENT-ID. Fallará porque el deployment no ha asignado al pod dicha identidad administrada.
+Intentamos autenticarnos en la API de Azure usando el mismo CLIENT-ID. Fallará porque el deployment no ha asignado al pod dicha identidad administrada (Tarda un buen rato en dar el error)
 
 ```
 az login --identity --username <CLIENT ID COPIADO ANTES> --allow-no-subscription -o table
