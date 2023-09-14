@@ -1713,6 +1713,10 @@ az keyvault purge \
 Limpiamos.
 
 ```
+cd ..
+```
+
+```
 kubectl delete -f lab-65-C-azure-vote.yaml -n read-access
 kubectl delete -f lab-65-C-azure-vote.yaml -n delete-access
 kubectl delete -f lab-65-C-clusterRoleBinding.yaml 
