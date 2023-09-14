@@ -833,7 +833,7 @@ code deployment-with-identity.yaml
 Línea 13:     Se asocia el pod (creado por el deployment) con la identidad administrada. Cualquier pod con esa
               etiqueta (label) podrá acceder a la identidad administrada.
 
-Líneas 16-18: Se usará la imagen 'azure-cli' que proporcionará los comandos 'az' dentro del pod.
+Líneas 16-18: Se usará la imagen 'azure-cli' que proporcionará los comandos 'az' dentro del contenedor del pod.
 ```
 
 Creamos el deployment
@@ -865,7 +865,7 @@ Cuando el pod esté iniciado abrimos una shell en él.
 kubectl exec -it <access-blob pod name> -- sh
 ```
 
-IMPORTANTE!!!! DENTRO DEL POD. Nos autenticamos con la API de Azure usando la identidad creada (El deployment permite usarla en los pods)
+IMPORTANTE!!!! DENTRO DEL CONTENEDOR DEL POD. Nos autenticamos con la API de Azure usando la identidad creada (El deployment permite usarla en los pods)
 
 ```
 az login --identity --username <Valor de CLIENT_ID mostrado antes> --allow-no-subscription -o table
@@ -1015,7 +1015,7 @@ K8s proporciona tres formas de crear secretos:
 K8s nos ofrece dos formas de consumir los secretos:
 
 1. Usar los secretos como una variable de entorno.
-2. Montar los secretos en un archivo dentro del pod.
+2. Montar los secretos en un archivo dentro del contenedor del pod.
 
 
 Crear secretos desde archivos.
