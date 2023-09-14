@@ -1372,7 +1372,7 @@ Para empezar, vamos a crear una nueva identidad administrada asignada por el usu
 
 ```
 az identity create \
-    --resource-group myaks-rg \ 
+    --resource-group myaks-rg \
     --name csi-to-key-vault \
     --location westeurope 
 ```
