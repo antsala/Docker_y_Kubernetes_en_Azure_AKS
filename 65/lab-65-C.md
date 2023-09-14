@@ -660,6 +660,9 @@ CLIENT_ID=$(az identity show \
                 --name access-blob-id \
                 --query clientId \
                 -o tsv)
+```
+
+```
 RESOURCE_ID=$(az identity show \
                 --resource-group myaks-rg \
                 --name access-blob-id \
