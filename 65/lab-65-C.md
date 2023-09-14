@@ -1256,7 +1256,9 @@ Mostramos los contenidos de los archivos que se han montado.
 
 ```
 cd /etc/secrets/
+
 cat secreturl.txt
+
 cat secrettoken.txt
 ```
 
@@ -1309,7 +1311,9 @@ NODE_RESOURCE_GROUP=$(az aks show \
                         --name myaks \
                         --query nodeResourceGroup \
                         --output tsv)
+```
 
+```
 VMSS=$(az vmss list \
         --resource-group $NODE_RESOURCE_GROUP \
         --query '[].name' \
