@@ -1385,7 +1385,9 @@ PRINCIPAL_ID=$(az identity show \
     --name csi-to-key-vault \
                 --query principalId \
                 --output tsv)
+```
 
+```
 RESOURCE_ID=$(az identity show \
     --resource-group myaks-rg \
     --name csi-to-key-vault \
