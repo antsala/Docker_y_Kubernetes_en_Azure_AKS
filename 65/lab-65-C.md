@@ -1381,15 +1381,16 @@ En la GUI se puede ver la identidad administrada en Home / Managed Identities / 
 
 ```
 PRINCIPAL_ID=$(az identity show \
-                --resource-group myaks-rg \
-                --name csi-to-key-vault \
+    --resource-group myaks-rg \
+    --name csi-to-key-vault \
                 --query principalId \
                 --output tsv)
+
 RESOURCE_ID=$(az identity show \
-                --resource-group myaks-rg \
-                --name csi-to-key-vault \
-                --query id \
-                --output tsv)
+    --resource-group myaks-rg \
+    --name csi-to-key-vault \
+    --query id \
+    --output tsv)
 ```
 
 Comprobamos
