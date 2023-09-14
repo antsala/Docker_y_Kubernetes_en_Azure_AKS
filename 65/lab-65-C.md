@@ -1672,7 +1672,7 @@ Limpiamos los recursos.
 ```
 helm delete csi-secrets-store-provider-azure/csi-secrets-store-provider-azure
 az aks pod-identity delete \
-    --resource-group myks-rg \
+    --resource-group myaks-rg \
     --cluster-name myaks \
     --namespace default \
     --name csi-to-key-vault
