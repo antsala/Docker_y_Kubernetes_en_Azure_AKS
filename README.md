@@ -228,7 +228,7 @@ El repositorio GIT está organizado en una serie de carpetas. Las presentaciones
    - Experimentos con ***liveness*** y ***readiness***.
    - ***Métricas simples***.
 
-3. (NOTA IMPORTANTE: ESTE LABORATORIO TARDA AL MENOS UNA HORAS EN DESARROLLARSE, Y NECESITA SER ADMINISTRADOR DE LA SUBSCRIPCIÓN DE AZURE)
+3. (NOTA IMPORTANTE: ESTE LABORATORIO TARDA AL MENOS 1.5 HORAS EN DESARROLLARSE, Y NECESITA SER ADMINISTRADOR DE LA SUBSCRIPCIÓN DE AZURE)
    Laboratorio 65-C: ***RBAC en AKS (Azure)***. Ejercicios: 
    - Introduccion a ***RBAC***.
    - Habilitar la ***integración de Azure AD*** en ***AKS***.
