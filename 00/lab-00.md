@@ -63,7 +63,7 @@ az login
 
 Si hemos habilitado ***MFA*** en la autenticación de Azure, aparecerá un mensaje indicando que el tenant requiere autenticación.
 
-![Advertencia legal](../img/202211191023.png)
+![MFA](../img/202211191023.png)
 
 Escribimos en ese caso el siguiente comando y autorizamos el login con el factor adicional configurado.
 ```

@@ -30,6 +30,10 @@ Los RBAC de Azure tienen que ver con los roles asignados a las personas para hac
 
 Los RBACs de Kubernetes son una característica OPCIONAL. Por defecto los clusters que se crean tienen RBAC habilitado, sin embargo no están integrados con Azure AD. Esto significa que no se pueden dar permisos de Kubernetes a usuarios de AAD, y habría que integrarlo.
 
+Para aclarar la práctica que tendremos que hacer, estudia la siguiente imagen.
+
+![MFA](../img/202309141215.png)
+
 
 ## Ejercicio 2. ***Habilitar la integración de Azure AD en AKS***
 
