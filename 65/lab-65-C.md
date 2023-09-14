@@ -1477,6 +1477,18 @@ helm install csi-secrets-store-provider-azure/csi-secrets-store-provider-azure \
     --set secrets-store-csi-driver.syncSecret.enabled=true	
 ```
 
+Obtenemos el nombre del chart que se ha instalado.
+
+```
+helm list
+```
+
+Localiza el nombre del chart, tendrá la forma: 'csi-secrets-store-provider-azure-#########'. Lo necesitarás pegar luego.
+
+```
+HELM_CHART=<Pega aquí el mombre del chart>
+```
+
 Comprobamos que la instalación es correcta verificando que la 'SecretProviderClass CRD' ha sido añadida al cluster. CRD = Custom Recource Definition.
 
 ```
@@ -1670,7 +1682,7 @@ Esto demuestra que aunque tehgamos un objeto 'SecretProviderClass' que intente s
 Limpiamos los recursos.
 
 ```
-helm delete csi-secrets-store-provider-azure/csi-secrets-store-provider-azure
+helm delete $HELM_CHART
 ```
 
 ```
