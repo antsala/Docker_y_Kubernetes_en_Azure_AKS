@@ -172,9 +172,9 @@ Crearemos los siguientes objetos en k8s.
 * *Otro ClusterRole*: Para dar permisos de eliminación en el espacio de nombres ***delete-access***.
 * *Otro ClusterRoleBinding*: Para asignar al usuario ***Luke*** el rol de eliminación anterior.
 
-Creamos los dos espacios de nombres. ***no-access*** y ***delete-access***. La idea es que el usuario que vamos a crear pueda borrar pods en ***delete-access*** y no pueda hacerlo en ***no-access***:
+Creamos los dos espacios de nombres. ***read-access*** y ***delete-access***. La idea es que el usuario que vamos a crear pueda borrar pods en ***delete-access*** y no pueda hacerlo en ***read-access***:
 ```
-kubectl create ns no-access
+kubectl create ns read-access
 kubectl create ns delete-access
 ```
 
@@ -185,13 +185,13 @@ cd ~/Docker_y_Kubernetes_en_Azure_AKS/65
 
 Desplegamos la aplicación de voto en los espacios de nombres:
 ```
-kubectl create -f lab-65-C-azure-vote.yaml --namespace no-access
+kubectl create -f lab-65-C-azure-vote.yaml --namespace read-access
 kubectl create -f lab-65-C-azure-vote.yaml --namespace delete-access
 ```
 
 Comprobamos:
 ```
-kubectl get all --namespace no-access 
+kubectl get all --namespace read-access 
 kubectl get all --namespace delete-access 
 ```
 
@@ -389,7 +389,7 @@ az account show
 
 Vamos a verificar si el usuario tiene permiso para ver los pods en todos los espacios de nombres. Debe ver los pods en los dos espacios:
 ```
-kubectl get pods --namespace no-access
+kubectl get pods --namespace read-access
 ```
 
 IMPORTANTE. Al interactuar con el cluster, se volverá a pedir la autenticación mediante un código. Sigue el procedimiento poniendo las credenciales de:
@@ -422,7 +422,7 @@ Ahora comprobamos los permisos de eliminación. Solo debe poder eliminar del esp
 kubectl delete pod --all --namespace delete-access
 ```
 ```
-kubectl delete pod --all --namespace no-access
+kubectl delete pod --all --namespace read-access
 ```
 
 Para limpiar, INICIAMOS SESIÓN CON EL USUARIO ADMINISTRADOR:
@@ -915,7 +915,7 @@ kubectl get pods
 Ejecutamos una shell en el contenedor.
 
 ```
-kubectl exec -it <no-access-blob pod name> -- sh
+kubectl exec -it <read-access-blob pod name> -- sh
 ```
 
 Intentamos autenticarnos en la API de Azure usando el mismo CLIENT-ID. Fallará porque el deployment no ha asignado al pod dicha identidad administrada.
@@ -1681,12 +1681,12 @@ az keyvault purge \
 Limpiamos.
 
 ```
-kubectl delete -f lab-65-C-azure-vote.yaml -n no-access
+kubectl delete -f lab-65-C-azure-vote.yaml -n read-access
 kubectl delete -f lab-65-C-azure-vote.yaml -n delete-access
 kubectl delete -f lab-65-C-clusterRoleBinding.yaml 
 kubectl delete -f lab-65-C-clusterRole.yaml 
 kubectl delete -f lab-65-C-roleBinding.yaml 
 kubectl delete -f lab-65-C-role.yaml 
-kubectl delete ns no-access
+kubectl delete ns read-access
 kubectl delete ns delete-access
 ```
