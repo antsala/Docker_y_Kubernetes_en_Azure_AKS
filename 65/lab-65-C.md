@@ -565,7 +565,7 @@ De esta forma, podemos controlar los pods del cluster que tendrán acceso a cier
 Configurar un cluster con identidades de pod aministradas de Azure AD.
 
 
-El complemento de identidades de pod administradas en un cluster en ejecución, se realiza por medio de la preview de aks. En la fecha de este escrito, Enero 2022, aún está en beta y no forma parte de la CLI oficial.
+El complemento de identidades de pod administradas en un cluster en ejecución, se realiza por medio de la preview de aks. En septiembre de 2023, aún está en beta y no forma parte de la CLI oficial.
 
 Para poder instalar este complemento, debemos agregar dicha extensión a la CLI
 
