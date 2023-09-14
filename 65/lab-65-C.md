@@ -1090,6 +1090,7 @@ Lo primero que tenemos que hacer es codificarlo en base64.
 
 ```
 echo 'https://my-secret-url-location.topsecret.com' | base64
+
 echo 'superSecretToken' | base64
 ```
 
