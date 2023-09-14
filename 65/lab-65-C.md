@@ -573,7 +573,7 @@ Para poder instalar este complemento, debemos agregar dicha extensión a la CLI
 az extension add --name aks-preview
 ```
 
-Actualiamos por si Microsoft hubiera publicado una nueva versión. 
+Actualizamos por si Microsoft hubiera publicado una nueva versión. 
 
 ```
 az extension update --name aks-preview
