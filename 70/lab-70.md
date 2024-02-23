@@ -155,7 +155,7 @@ echo $ACR_NAME
 Editamos el archivo 'deployment_smartwhale.yaml'
 
 ```
-code deployment_smartwhale.yaml
+nano deployment_smartwhale.yaml
 ```
 
 Importante !!! En la línea 19: Poner el nombre del ACR que hemos creado antes ($ACR)

@@ -201,7 +201,7 @@ kubectl get all --namespace delete-access
 
 Ahora vamos a crear el objeto ***ClusterRole***, que asignará permisos de solo lectura en todo el cluster. Editamos el archivo ***lab-65-C-clusterRole.yaml***:
 ```
-code lab-65-C-clusterRole.yaml
+nano lab-65-C-clusterRole.yaml
 ```
 
 * *Línea 2*:  Define la creación de una instancia ***ClusterRole***.
@@ -232,7 +232,7 @@ echo $AKS_USERS_GROUP_ID
 
 Ahora vamos a crear un objeto ***ClusterRoleBinding*** que enlaza el rol a un usuario o grupo. Editamos el archivo ***lab-65-C-clusterRoleBinding.yaml***:
 ```
-code lab-65-C-clusterRoleBinding.yaml
+nano lab-65-C-clusterRoleBinding.yaml
 ```
 
 * *Línea 2*: Define que estamos creando una instancia ***ClusterRoleBinding***.
@@ -259,7 +259,7 @@ kubectl describe clusterRoleBinding readOnlyBinding
 
 A continuación crearemos un rol que permite la eliminación en el espacio de nombres ***delete-access***. Editamos el archivo ***lab-65-C-role.yaml***.
 ```
-code lab-65-C-role.yaml
+nano lab-65-C-role.yaml
 ```
 
 * *Línea 2*: Se indica que se está creando una instancia de ***Role*** y no de ***ClusterRole***. La instancia de ***Role*** no se aplica a todo el cluster.
@@ -283,7 +283,7 @@ kubectl describe role deleteRole  --namespace delete-access
 
 Por último creamos una instancia de ***RoleBinding*** para asignar el role al usuario ***Luke***. Editamos el archivo ***lab-65-C-roleBinding.yaml***:
 ```
-code lab-65-C-roleBinding.yaml
+nano lab-65-C-roleBinding.yaml
 ```
 
 * *Línea 2*: Crea una instancia de un ***RoleBinding*** y no de un ***ClusterRoleBinding*** porque lo que se está asociando es un ***Role*** y no un ***ClusterRole***.
@@ -826,7 +826,7 @@ az storage blob upload \
 Vamos a intentar acceder al archivo desde un pod. Para ello crearemos un nuevo desployment que contendrá un vínculo con la identidad administrada que creamos anteriormente. Editamos el archivo 'deployment-with-identity.yaml'.
 
 ```
-code deployment-with-identity.yaml
+nano deployment-with-identity.yaml
 ```
 
 ```
@@ -902,7 +902,7 @@ Ahora volvemos a hacerlo mismo, pero con la diferencia que el deployment no inco
 Editamos el archivo 'deployment-without-identity'.
 
 ```
-code deployment-without-identity.yaml
+nano deployment-without-identity.yaml
 ```
 
 Comprobar que ya no existe la etiqueta 'aadpodidbinding: access-blob-id'
@@ -1099,7 +1099,7 @@ echo 'superSecretToken' | base64
 A continuación debemos editar un archivo YAML para definir los secretos. El achivo ya está creado. Lo editamos.
 
 ```
-code myfirstsecret.yaml
+nano myfirstsecret.yaml
 ```
 
 ```
@@ -1160,7 +1160,7 @@ Secretos como variables de entorno.
 Editamos el archivo 'pod-with-env-secrets.yaml'.
 
 ```
-code pod-with-env-secrets.yaml
+nano pod-with-env-secrets.yaml
 ```
 
 ```
@@ -1221,7 +1221,7 @@ Secretos como archivos.
 Veamos como montar los mismos secretos como archivos en lugar de variables de entorno. Editamos el archivo 'pod-with-vol-secret.yaml'.
 
 ```
-code pod-with-vol-secret.yaml
+nano pod-with-vol-secret.yaml
 ```
 
 ```
@@ -1515,7 +1515,7 @@ echo $KEY_VAULT_NAME
 Ahora necesitamos crear un objeto 'SecretProviderClass'. Editamos el archivo 'secretproviderclass-file.yaml'
 
 ```
-code secretproviderclass-file.yaml
+nano secretproviderclass-file.yaml
 ```
 
 ```
@@ -1544,7 +1544,7 @@ kubectl create -f secretproviderclass-file.yaml
 Ahora creamos el pod. Editar el archivo 'pod-keyvault-file.yaml'
 
 ```
-code pod-keyvault-file.yaml
+nano pod-keyvault-file.yaml
 ```
 ```
 Líneas 5-6:   Aquí enlazamos el pod con la identidad que creamos antes.
@@ -1605,7 +1605,7 @@ echo $KEY_VAULT_NAME
 Editamos el archivo 'secretproviderclass-env.yaml'
 
 ```
-code secretproviderclass-env.yaml
+nano secretproviderclass-env.yaml
 ```
 
 ```
@@ -1635,7 +1635,7 @@ kubectl create -f secretproviderclass-env.yaml
 Editamos el archivo 'pod-keyvault-env.yaml'.
 
 ```
-code pod-keyvault-env.yaml
+nano pod-keyvault-env.yaml
 ```
 
 La diferencia entre este y el anterior están en las líneas 11 a 16.
